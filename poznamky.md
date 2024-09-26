@@ -1,6 +1,6 @@
 # Java 
 
-Moje poznamky    
+Moje poznamky   
 
 
 ```java
@@ -33,4 +33,24 @@ void main() {
 }
 ```
 
-![image](https://github.com/user-attachments/assets/ea07cc42-5ff4-479b-be3d-1588b3d3f34a)
+Nacitanie zo suboru, pridali sme Exception 'throws IOException'
+
+
+```
+import java.io.IOException;
+import java.lang.reflect.Array;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.List;
+
+
+void main() throws IOException {
+    String filename = "words.txt";
+    Path filePath = Path.of(filename);
+    List<String> lines = Files.readAllLines(filePath);
+    for (String line: lines) {
+        System.out.printf(" The word %s has %d %n", line, line.length());
+    }
+}
+```
