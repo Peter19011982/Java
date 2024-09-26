@@ -491,6 +491,9 @@ void main() {
 }
 '''
 
+https://github.com/janbodnar/Java-Skolenie/blob/main/db/sqlite.md
+https://github.com/janbodnar/Java-Skolenie/blob/main/db/sql.md
+
 BROWSER SQLite DB
 https://sqlitebrowser.org/dl/
 
@@ -532,3 +535,72 @@ void main() {
 
 ![image](https://github.com/user-attachments/assets/8aba794c-d6fc-443b-a486-76a2a2685649)
 
+
+
+
+```java
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+void main() {
+
+    String query = "SELECT * FROM cars";
+
+    try (Connection con = DriverManager.getConnection("jdbc:sqlite:test.db");
+         PreparedStatement pst = con.prepareStatement(query);
+         ResultSet rs = pst.executeQuery()) {
+
+        while (rs.next()) {
+// !!! pristupujeme od 1,nie od 0
+            System.out.printf("%d %s %d%n", rs.getInt(1),
+                    rs.getString(2), rs.getInt(3));
+        }
+
+    } catch (SQLException ex) {
+
+        Logger lgr = Logger.getLogger(getClass().getName());
+        lgr.log(Level.SEVERE, ex.getMessage(), ex);
+    }
+}
+```
+
+
+```java
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+void main() {
+
+    int carPrice = 23999;
+    String carName = "Oldsmobile";
+//spravne zadanie parametrov  VALUES(?, ?)
+    String sql = "INSERT INTO cars(name, price) VALUES(?, ?)";
+
+    try (Connection con = DriverManager.getConnection("jdbc:sqlite:test.db")) {
+
+        try (PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setString(1, carName);
+            pst.setInt(2, carPrice);
+            pst.executeUpdate();
+
+            System.out.println("A new car has been inserted");
+        }
+
+    } catch (SQLException ex) {
+
+        Logger lgr = Logger.getLogger(getClass().getName());
+        lgr.log(Level.SEVERE, ex.getMessage(), ex);
+    }
+}
+```
