@@ -170,3 +170,43 @@ void main() {
 }
 ```
 
+Program nacita words.txt a vypise najprav slova zacinajuce na w a porom zacinajuce na w alebo c:
+
+```
+import java.io.IOException;
+import java.lang.reflect.Array;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+// program nacita words.txt a vypise najprav slova zacinajuce na w a porom zacinajuce na w alebo c
+void main() throws IOException {
+    List<String> w_words = new ArrayList<>();
+    List<String> w_c_words = new ArrayList<>();
+
+    String filename = "words.txt";
+    // mozem dat aj absolutnu cestu C:\Users\student\IdeaProjects\Java_Proj\words.txt
+    // alebo relativnu cestu ak by som mal words.txt napr v src: src/words.txt
+    Path filePath = Path.of(filename);
+    List<String> lines = Files.readAllLines(filePath);
+
+    for (String line: lines) {
+        if (line.startsWith("w")){
+            w_words.add(line);
+        }
+        //System.out.printf(" The word %s has %d %n", line, line.length());
+    }
+
+    for (String line: lines) {
+        if (line.startsWith("w") || line.startsWith("c")){
+            w_c_words.add(line);
+        }
+        //System.out.printf(" The word %s has %d %n", line, line.length());
+    }
+    System.out.println(w_words);
+    System.out.println(w_c_words);
+}
+```
+
