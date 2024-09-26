@@ -412,7 +412,7 @@ public class User {
 ```
 
 ## DATABAZY 
-Novy projek v Int.Idea  - Maven
+Novy Java projek v Int.Idea  - Maven (nie intIdea)
 
 https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc/3.46.1.0
 
