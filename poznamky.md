@@ -136,3 +136,35 @@ void fillList(List<String> data) {
     data.add("glass");
 }
 ```
+
+Podmienecne vymazanie cisel/slov z Listu:
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+void main() {
+    List<String> words = new ArrayList<>();
+   // zakomnetovane je varianta s lListom cisel
+   // List<Integer> values = new ArrayList<>();
+//    values.add(5);
+//    values.add(-3);
+//    values.add(2);
+//    values.add(8);
+//    values.add(-2);
+//    values.add(6);
+
+    words.add("sky");
+    words.add("atom");
+    words.add("wall");
+    words.add("wral");
+
+    //values.removeIf(val -> val < 0);
+
+    words.removeIf(word -> word.startsWith("w"));
+    System.out.println(words);
+
+    //system.out.println(values);
+}
+```
+
