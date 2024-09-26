@@ -418,8 +418,7 @@ https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc/3.46.1.0
 
 ![image](https://github.com/user-attachments/assets/77bc70ab-20d2-42bb-9f63-a25f6daad6b0)
 
-```
-
+```java
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -458,8 +457,7 @@ https://github.com/janbodnar/Java-Skolenie/blob/main/db/sqlite.md
 
 pouzite try catch blokov
 
-'''
-
+'''java
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -493,4 +491,41 @@ void main() {
 }
 '''
 
+BROWSER SQLite DB
+https://sqlitebrowser.org/dl/
 
+```java
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+void main() {
+
+    try (Connection con = DriverManager.getConnection("jdbc:sqlite:test.db")) {
+
+        try (Statement st = con.createStatement()) {
+
+            st.addBatch("DROP TABLE IF EXISTS cars");
+            st.addBatch("CREATE TABLE cars(id INTEGER PRIMARY KEY, name TEXT, price INT)");
+
+            st.addBatch("INSERT INTO cars(name, price) VALUES('Audi',52642)");
+            st.addBatch("INSERT INTO cars(name, price) VALUES('Mercedes',57127)");
+            st.addBatch("INSERT INTO cars(name, price) VALUES('Skoda',9000)");
+            st.addBatch("INSERT INTO cars(name, price) VALUES('Volvo',29000)");
+            st.addBatch("INSERT INTO cars(name, price) VALUES('Bentley',350000)");
+            st.addBatch("INSERT INTO cars(name, price) VALUES('Citroen',21000)");
+            st.addBatch("INSERT INTO cars(name, price) VALUES('Hummer',41400)");
+            st.addBatch("INSERT INTO cars(name, price) VALUES('Volkswagen',21600)");
+            st.executeBatch();
+        }
+
+    } catch (SQLException ex) {
+
+        Logger lgr = Logger.getLogger(getClass().getName());
+        lgr.log(Level.SEVERE, ex.getMessage(), ex);
+    }
+}
+```
