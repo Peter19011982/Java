@@ -604,3 +604,41 @@ void main() {
     }
 }
 ```
+
+## UI Swing
+https://github.com/janbodnar/Java-Skolenie/blob/main/ui/swing.md
+```java
+package com.zetcode;
+
+import java.awt.EventQueue;
+import javax.swing.JFrame;
+
+public class SimpleEx extends JFrame {
+
+    public SimpleEx() {
+
+        initUI();
+    }
+
+    private void initUI() {
+
+        setTitle("Simple example");
+        setSize(400, 350);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+    }
+
+    public static void main(String[] args) {
+
+        EventQueue.invokeLater(() -> {
+
+            var ex = new SimpleEx();
+            ex.setVisible(true);
+        });
+    }
+}
+```
+
+![image](https://github.com/user-attachments/assets/36c6a8a2-0e5e-433b-98c7-6f11e15da70c)
+
+
