@@ -361,3 +361,7 @@ void main() {
     vals.forEach(System.out::println);
 }
 ```
+
+
+https://github.com/janbodnar/Java-Skolenie/blob/main/scope.md
+
