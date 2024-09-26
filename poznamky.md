@@ -61,3 +61,35 @@ Polia
 
 
 https://github.com/janbodnar/Java-Skolenie/blob/main/collections/arraylist.md
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+void main() {
+
+    List<String> langs = new ArrayList<>();
+
+    langs.add("Java");
+    langs.add("Python");
+
+    //pozicia, ostatne sa posunu
+    langs.add(1, "C#");
+    langs.add(0, "Ruby");
+    System.out.println(langs.size());
+    for (String lang : langs) {
+
+        System.out.printf("%s ", lang);
+    }
+
+    System.out.println();
+
+    //nemodifikovatelne listy - pocas behu programu sa nemenia
+    var words = List.of("wood", "forest", "falcon", "eagle");
+    System.out.println(words);
+
+    var values = List.of(1, 2, 3);
+    System.out.println(values);
+    
+}
+```
