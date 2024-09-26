@@ -211,7 +211,7 @@ void main() throws IOException {
 ```
 
 Hashe = mapy a praca s nimi
-
+https://github.com/janbodnar/Java-Skolenie/blob/main/collections/hashmap.md
 
 ```
 import java.util.HashMap;
@@ -253,5 +253,40 @@ void main() {
     System.out.println(cap2);
 
 
+}
+```
+
+
+program, ktory spocita znaky v danej vete a vypise ich pocet:
+
+
+```
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+// program, ktory spocita znaky v danej vete a vypise ich pocet
+void main() {
+    // pretransformovat vetu do znakov
+    String message = "there is an old falcon in the sky";
+    char[] letters = message.toCharArray();
+    System.out.println(Arrays.toString(letters));
+    char[] chars = message.toCharArray();
+
+    //zadefinovanie mapy
+    Map<Character, Integer> charFreq = new HashMap<>();
+
+    for (Character c : chars) {
+
+        // Check if the character already exists in the map
+        if (charFreq.containsKey(c)) {
+            // Increment the frequency count for the existing character
+            charFreq.put(c, charFreq.get(c) + 1);
+        } else {
+            // Add the character to the map with a frequency of 1
+            charFreq.put(c, 1);
+        }
+    }
+
+    System.out.println(charFreq);
 }
 ```
