@@ -142,7 +142,7 @@ Podmienecne vymazanie cisel/slov z Listu:
 ```java
 import java.util.ArrayList;
 import java.util.List;
-
+//podmienecne vymazanie cisel/slov z Listu
 void main() {
     List<String> words = new ArrayList<>();
    // zakomnetovane je varianta s lListom cisel
@@ -162,6 +162,8 @@ void main() {
     //values.removeIf(val -> val < 0);
 
     words.removeIf(word -> word.startsWith("w"));
+    // varianta ked nezacina na w
+    //words.removeIf(word -> !word.startsWith("w"));
     System.out.println(words);
 
     //system.out.println(values);
