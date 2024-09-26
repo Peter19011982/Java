@@ -454,3 +454,43 @@ dole vypis, ze pouzivame DB SQLite 3.46.1
 https://github.com/janbodnar/Java-Skolenie/blob/main/db/sqlite.md
 ![image](https://github.com/user-attachments/assets/999d0087-be5b-4a75-aa28-f537b6ed4cba)
 
+
+
+pouzite try catch blokov
+
+'''
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+void main() {
+
+    String query = "SELECT SQLITE_VERSION()";
+//try/catch sa pouziva ak nmoze nastat nejaka chyba 
+    try (Connection con = DriverManager.getConnection("jdbc:sqlite:test.db");
+         Statement st = con.createStatement();
+         ResultSet rs = st.executeQuery(query)) {
+
+        if (rs.next()) {
+
+            System.out.println(rs.getString(1));
+        }
+        // uzavrie automaticky spojenia , cize uz netreba uzatvarat
+//        con.close();
+//        st.close();
+//        rs.close();
+
+    } catch (SQLException ex) {
+
+        Logger lgr = Logger.getLogger(getClass().getName());
+        lgr.log(Level.SEVERE, ex.getMessage(), ex);
+    }
+}
+'''
+
+
