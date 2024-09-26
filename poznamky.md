@@ -372,7 +372,10 @@ Main trieda (k nej este vytvorime triedu User s privatnou premennou name)
 ```java
 String name = "Peter";
 
+String name = "Peter";
+
 void main() {
+    // nastavenie premennej v z setName, getName z inej triedy, viem k nej pristupovat len cez metody
     var user = new User();
     user.setName("Pavol");
     System.out.println(user.getName());
