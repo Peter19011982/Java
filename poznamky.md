@@ -448,3 +448,8 @@ void main() {
     }
 }
 ```
+
+dole vypis, ze pouzivame DB SQLite 3.46.1
+
+![image](https://github.com/user-attachments/assets/999d0087-be5b-4a75-aa28-f537b6ed4cba)
+
