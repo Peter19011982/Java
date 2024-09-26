@@ -365,3 +365,43 @@ void main() {
 
 https://github.com/janbodnar/Java-Skolenie/blob/main/scope.md
 
+```java
+String name = "Peter";
+
+void main() {
+    var user = new User();
+    user.setName("Pavol");
+    System.out.println(user.getName());
+
+    String name = "Jozef";
+    System.out.println("This is main function");
+
+    System.out.printf("Hello %s!%n", name);
+    hello();
+}
+
+void hello() {
+
+    System.out.println("This is greet function");
+    System.out.printf("Hello %s!%n", name);
+}
+```
+
+druha trieda User,kde je zadefnovana privatna premenna name
+
+```
+public class User {
+
+    private String name;
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+}
+```
+
+
