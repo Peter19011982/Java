@@ -451,5 +451,6 @@ void main() {
 
 dole vypis, ze pouzivame DB SQLite 3.46.1
 
+https://github.com/janbodnar/Java-Skolenie/blob/main/db/sqlite.md
 ![image](https://github.com/user-attachments/assets/999d0087-be5b-4a75-aa28-f537b6ed4cba)
 
