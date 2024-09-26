@@ -57,4 +57,7 @@ void main() throws IOException {
 }
 ```
 
+Polia
+
+
 https://github.com/janbodnar/Java-Skolenie/blob/main/collections/arraylist.md
