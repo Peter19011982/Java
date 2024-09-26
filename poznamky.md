@@ -641,4 +641,85 @@ public class SimpleEx extends JFrame {
 
 ![image](https://github.com/user-attachments/assets/36c6a8a2-0e5e-433b-98c7-6f11e15da70c)
 
+```java
+package com.zetcode;
+
+import javax.swing.*;
+import java.awt.EventQueue;
+
+public class QuitButtonEx extends JFrame {
+
+    public QuitButtonEx() {
+
+        initUI();
+    }
+
+    private void initUI() {
+
+        var quitButton = new JButton("Show message");
+        quitButton.addActionListener((_) -> JOptionPane.showMessageDialog(this,"button clicked"));
+
+        createLayout(quitButton);
+
+        setTitle("Quit button");
+        setSize(400, 350);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+    }
+
+    private void createLayout(JComponent... arg) {
+
+        var pane = getContentPane();
+        var gl = new GroupLayout(pane);
+        pane.setLayout(gl);
+
+        gl.setAutoCreateContainerGaps(true);
+
+        gl.setHorizontalGroup(gl.createSequentialGroup()
+                .addComponent(arg[0])
+        );
+
+        gl.setVerticalGroup(gl.createSequentialGroup()
+                .addComponent(arg[0])
+        );
+    }
+
+    public static void main(String[] args) {
+
+        EventQueue.invokeLater(() -> {
+
+            var ex = new QuitButtonEx();
+            ex.setVisible(true);
+        });
+    }
+}
+```
+
+
+![image](https://github.com/user-attachments/assets/a26c903a-2df5-4a13-80c2-dbd096efa237)
+
+
+## vytvorenie jar suboru:
+Artifact:
+1. hamburger menu
+2. Project structure
+3. Artifacts
+4. + a JAR  -> From modules with dependeces
+5. Vybrat main class + OK
+6. Apply + OK
+
+Build:
+1. Hamburger menu
+2. Build -> Build Artifacts - Build
+3. jar subor najdem v out/artifacts
+
+Spustenie v prikazovom riadku:  (predtym pridat java path do premennych prostredia windows)
+cd C:\Users\student\IdeaProjects\UISwingEx\out\artifacts\UISwingEx_jar\
+C:\Users\student\IdeaProjects\UISwingEx\out\artifacts\UISwingEx_jar> java -jar .\UISwingEx.jar
+
+
+![image](https://github.com/user-attachments/assets/7ff2a17c-23ca-4b9c-a472-bfea004f8726)
+
+
+
 
