@@ -411,8 +411,40 @@ public class User {
 }
 ```
 
-DATABAZY
+## DATABAZY 
 Novy projek v Int.Idea  - Maven
+
+https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc/3.46.1.0
 
 ![image](https://github.com/user-attachments/assets/77bc70ab-20d2-42bb-9f63-a25f6daad6b0)
 
+```
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+void main() {
+
+    String query = "SELECT SQLITE_VERSION()";
+
+    try (Connection con = DriverManager.getConnection("jdbc:sqlite:test.db");
+         Statement st = con.createStatement();
+         ResultSet rs = st.executeQuery(query)) {
+
+        if (rs.next()) {
+
+            System.out.println(rs.getString(1));
+        }
+
+    } catch (SQLException ex) {
+
+        Logger lgr = Logger.getLogger(getClass().getName());
+        lgr.log(Level.SEVERE, ex.getMessage(), ex);
+    }
+}
+```
