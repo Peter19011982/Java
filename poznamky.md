@@ -46,7 +46,9 @@ import java.util.List;
 
 
 void main() throws IOException {
-    String filename = "words.txt";
+    String filename = "words.txt"; 
+    // mozem dat aj absolutnu cestu C:\Users\student\IdeaProjects\Java_Proj\words.txt
+    // alebo relativnu cestu ak by som mal words.txt napr v src: src/words.txt
     Path filePath = Path.of(filename);
     List<String> lines = Files.readAllLines(filePath);
     for (String line: lines) {
