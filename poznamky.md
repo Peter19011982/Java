@@ -93,3 +93,46 @@ void main() {
     
 }
 ```
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+void main() {
+
+    List<String> items = new ArrayList<>();
+    fillList(items);
+    //metody
+    items.set(3, "watch");
+    items.add("bowl");
+    items.remove(0);
+    items.remove("pen");
+    items.removeFirst()
+    items.removeLast();
+
+    for (Object el : items) {
+
+        System.out.println(el);
+    }
+
+    items.clear();
+
+    if (items.isEmpty()) {
+
+        System.out.println("The list is empty");
+    } else {
+        System.out.println("The list is not empty");
+    }
+}
+
+void fillList(List<String> data) {
+
+    data.add("coin");
+    data.add("pen");
+    data.add("pencil");
+    data.add("clock");
+    data.add("book");
+    data.add("spectacles");
+    data.add("glass");
+}
+```
