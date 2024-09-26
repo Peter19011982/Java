@@ -36,7 +36,7 @@ void main() {
 Nacitanie zo suboru, pridali sme Exception 'throws IOException'
 
 
-```
+```java
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.nio.file.Files;
