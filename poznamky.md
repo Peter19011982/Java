@@ -365,6 +365,10 @@ void main() {
 
 https://github.com/janbodnar/Java-Skolenie/blob/main/scope.md
 
+
+Main trieda (k nej este vytvorime triedu User s privatnou premennou name)
+
+
 ```java
 String name = "Peter";
 
