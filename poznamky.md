@@ -210,3 +210,48 @@ void main() throws IOException {
 }
 ```
 
+Hashe = mapy a praca s nimi
+
+
+```
+import java.util.HashMap;
+import java.util.Map;
+
+// Hashe = mapy a praca s nimi
+void main() {
+
+    Map<String, String> capitals = new HashMap<>();
+
+    capitals.put("svk", "Bratislava");
+    capitals.put("ger", "Berlin");
+    capitals.put("hun", "Budapest");
+    capitals.put("czk", "Prague");
+    capitals.put("pol", "Warsaw");
+    capitals.put("ita", "Rome");
+
+    System.out.println(capitals);
+    // podmienecne pridavanie do mapy aj chyba , doplni
+    capitals.putIfAbsent("rus", "Moscow");
+    capitals.putIfAbsent("ita", "Rome");
+
+    int size = capitals.size();
+
+    System.out.println(capitals);
+    System.out.println(size);
+    capitals.remove("pol");
+    capitals.remove("ita");
+    size = capitals.size();
+    System.out.println(capitals);
+    System.out.println(size);
+    String cap1 = capitals.get("ita");
+    //resp. ak sa tam nenadzadza vypise NA (NotAvailabled))
+    cap1 = capitals.getOrDefault("ita", "NA");
+    String cap2 = capitals.get("rus");
+    System.out.println(cap1);
+
+    System.out.println(cap1);
+    System.out.println(cap2);
+
+
+}
+```
