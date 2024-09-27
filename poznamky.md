@@ -1288,3 +1288,309 @@ public class HistogramEx {
 ```
 
 ![image](https://github.com/user-attachments/assets/8777df7d-dc14-45ea-bc47-0f7191cc2d22)
+
+
+
+##LINE chart
+
+```java
+package com.zetcode;
+
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.block.BlockBorder;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.chart.title.TextTitle;
+import org.jfree.data.xy.XYDataset;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
+
+import javax.swing.BorderFactory;
+import javax.swing.JFrame;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.EventQueue;
+import java.awt.Font;
+
+public class LineChartEx extends JFrame {
+
+    public LineChartEx() {
+
+        initUI();
+    }
+
+    private void initUI() {
+
+        XYDataset dataset = createDataset();
+        JFreeChart chart = createChart(dataset);
+
+        ChartPanel chartPanel = new ChartPanel(chart);
+        chartPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        chartPanel.setBackground(Color.white);
+        add(chartPanel);
+
+        pack();
+        setTitle("Line chart");
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    private XYDataset createDataset() {
+
+        var series = new XYSeries("2016");
+        series.add(18, 567);
+        series.add(20, 612);
+        series.add(25, 800);
+        series.add(30, 980);
+        series.add(40, 1410);
+        series.add(50, 2350);
+
+        var dataset = new XYSeriesCollection();
+        dataset.addSeries(series);
+
+        return dataset;
+    }
+
+    private JFreeChart createChart(XYDataset dataset) {
+
+        JFreeChart chart = ChartFactory.createXYLineChart(
+                "Average salary per age",
+                "Age",
+                "Salary (€)",
+                dataset,
+                PlotOrientation.VERTICAL,
+                true,
+                true,
+                false
+        );
+
+        XYPlot plot = chart.getXYPlot();
+
+        var renderer = new XYLineAndShapeRenderer();
+        renderer.setSeriesPaint(0, Color.RED);
+        renderer.setSeriesStroke(0, new BasicStroke(2.0f));
+
+        plot.setRenderer(renderer);
+        plot.setBackgroundPaint(Color.white);
+
+        plot.setRangeGridlinesVisible(true);
+        plot.setRangeGridlinePaint(Color.BLACK);
+
+        plot.setDomainGridlinesVisible(true);
+        plot.setDomainGridlinePaint(Color.BLACK);
+
+        chart.getLegend().setFrame(BlockBorder.NONE);
+
+        chart.setTitle(new TextTitle("Average Salary per Age",
+                        new Font("Serif", java.awt.Font.BOLD, 18)
+                )
+        );
+
+        return chart;
+    }
+
+    public static void main(String[] args) {
+
+        EventQueue.invokeLater(() -> {
+
+            var ex = new LineChartEx();
+            ex.setVisible(true);
+        });
+    }
+}
+```
+![image](https://github.com/user-attachments/assets/7cb8e106-856b-45d8-8189-530d5fb4eaef)
+
+
+##BAR Chart
+
+
+```java
+package org.example;
+
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.category.DefaultCategoryDataset;
+
+import javax.swing.BorderFactory;
+import javax.swing.JFrame;
+import java.awt.Color;
+import java.awt.EventQueue;
+
+public class BarChartEx extends JFrame {
+
+    public BarChartEx() {
+
+        initUI();
+    }
+
+    private void initUI() {
+
+        CategoryDataset dataset = createDataset();
+
+        JFreeChart chart = createChart(dataset);
+        ChartPanel chartPanel = new ChartPanel(chart);
+        chartPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        chartPanel.setBackground(Color.white);
+        add(chartPanel);
+
+        pack();
+        setTitle("Bar chart");
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    private CategoryDataset createDataset() {
+
+        var dataset = new DefaultCategoryDataset();
+        dataset.setValue(46, "Gold medals", "USA");
+        dataset.setValue(38, "Gold medals", "China");
+        dataset.setValue(29, "Gold medals", "UK");
+        dataset.setValue(22, "Gold medals", "Russia");
+        dataset.setValue(13, "Gold medals", "South Korea");
+        dataset.setValue(11, "Gold medals", "Germany");
+
+        return dataset;
+    }
+
+    private JFreeChart createChart(CategoryDataset dataset) {
+
+        JFreeChart barChart = ChartFactory.createBarChart(
+                "Olympic gold medals in London",
+                "",
+                "Gold medals",
+                dataset,
+                PlotOrientation.VERTICAL,
+                false, true, false);
+
+        return barChart;
+    }
+
+    public static void main(String[] args) {
+
+        EventQueue.invokeLater(() -> {
+
+            var ex = new BarChartEx();
+            ex.setVisible(true);
+        });
+    }
+}
+```
+
+![image](https://github.com/user-attachments/assets/cbb55e54-bdce-4327-82ff-da1ee82b6b0f)
+
+
+#Filtrovanie, sortovanie:
+
+
+```java
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
+void main() throws IOException {
+    String fileName = "user.csv";
+    Path filePath = Path.of(fileName);
+
+    List<String> lines = Files.readAllLines(filePath);
+    List<User> users = new ArrayList<>();
+
+    for (String line: lines){
+        String[] fields = line.split(",");
+        User user = new User(fields[0],fields[1],fields[2]);
+        users.add(user);
+    }
+    //users.forEach(System.out::println);
+    List<User> filtered = users.stream().filter(user -> user.occupation().equals("driver")).toList();
+    System.out.println(filtered);
+
+//    List<User> sorted = users.stream().sorted(Comparator.comparing(User::lastName)).toList();
+//    sorted.forEach(System.out::println);
+
+}
+record User(String firstName, String lastName, String occupation){}
+```
+
+
+##alternativne na pracu s csv mame opencsv kniznicu:
+
+
+https://github.com/janbodnar/Java-Skolenie/blob/main/libs/opencsv.md (nacitat z maven repozitara + pomxml + reload  )
+
+
+```java
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvValidationException;
+
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+
+void main() throws IOException, CsvValidationException {
+
+    var fileName = "src/main/resources/user.csv";
+
+    try (var fr = new FileReader(fileName, StandardCharsets.UTF_8);
+         var reader = new CSVReader(fr)) {
+
+        String[] nextLine;
+
+        while ((nextLine = reader.readNext()) != null) {
+
+            for (var e : nextLine) {
+                System.out.format("%s ", e);
+            }
+        }
+    }
+}
+```
+
+## to iste ako v predchadzajucom sme robili, ale teraz pomocou kniznice CSVReader
+
+
+```java
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvValidationException;
+
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
+void main() throws IOException, CsvValidationException {
+
+    var fileName = "src/main/resources/user.csv";
+    List<User> users = new ArrayList<>();
+    try (var fr = new FileReader(fileName, StandardCharsets.UTF_8);
+         var reader = new CSVReader(fr)) {
+
+        String[] nextLine;
+
+        while ((nextLine = reader.readNext()) != null) {
+            User user = new User(nextLine[0],nextLine[1],nextLine[2]);
+            users.add(user);
+//            for (var e : nextLine) {
+//                System.out.format("%s %n ", e);
+//            }
+        }
+        List<User> filtered = users.stream().filter(user -> user.occupation().equals("driver")).toList();
+        System.out.println(filtered);
+
+        List<User> sorted = users.stream().sorted(Comparator.comparing(User::lastName).reversed()).toList();
+        sorted.forEach(System.out::println);
+    }
+}
+record  User(String firstname, String lastName, String occupation){}
+```
