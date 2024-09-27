@@ -457,7 +457,7 @@ https://github.com/janbodnar/Java-Skolenie/blob/main/db/sqlite.md
 
 pouzite try catch blokov
 
-'''java
+```java
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -489,7 +489,7 @@ void main() {
         lgr.log(Level.SEVERE, ex.getMessage(), ex);
     }
 }
-'''
+```
 
 https://github.com/janbodnar/Java-Skolenie/blob/main/db/sqlite.md
 https://github.com/janbodnar/Java-Skolenie/blob/main/db/sql.md
@@ -607,6 +607,8 @@ void main() {
 
 ## UI Swing
 https://github.com/janbodnar/Java-Skolenie/blob/main/ui/swing.md
+
+
 ```java
 package com.zetcode;
 
@@ -639,7 +641,9 @@ public class SimpleEx extends JFrame {
 }
 ```
 
+
 ![image](https://github.com/user-attachments/assets/36c6a8a2-0e5e-433b-98c7-6f11e15da70c)
+
 
 ```java
 package com.zetcode;
@@ -875,6 +879,7 @@ void main() {
 
 ##Filtrovanie slov zo suboru
 
+
 ```java
 import java.io.IOException;
 import java.nio.file.Files;
@@ -915,6 +920,7 @@ void main() throws IOException {
 ## OOP
 
 https://github.com/janbodnar/Java-Skolenie/blob/main/oop/objects.md
+
 
 ```java
 import java.util.List;
@@ -1003,6 +1009,7 @@ public class User {
 
 ## main trieda
 
+
 ```java
 import java.util.List;
 import java.util.Random;
@@ -1066,6 +1073,7 @@ record User(String name, int age){}
 
 https://github.com/janbodnar/Java-Skolenie/blob/main/record.md
 
+
 ```java
 void main() {
 
@@ -1091,7 +1099,7 @@ record User(String firstName, String lastName, int salary) {
 ##ENUM
 https://github.com/janbodnar/Java-Skolenie/blob/main/enum.md
 
-
+```java
 enum Day {
 
     MONDAY,
@@ -1122,8 +1130,10 @@ void main() {
         System.out.println(d);
     }
 }
+```
 
 ## dalsi priklad na ENUM, kde doplnime ENUM  MaritalStatus 
+
 
 ```java
 import java.util.List;
@@ -1292,6 +1302,7 @@ public class HistogramEx {
 
 
 ##LINE chart
+
 
 ```java
 package com.zetcode;
@@ -1702,6 +1713,7 @@ public class Main {
 ```
 
 ## staticka premenna count v Beeing a v ostatnych tiredach Extendovanch dedena
+
 
 ```java
 package com.zetcode;
