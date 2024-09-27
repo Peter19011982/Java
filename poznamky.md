@@ -1224,11 +1224,13 @@ void main()
 
 
 ##CHART
+
+
 https://github.com/janbodnar/Java-Skolenie/blob/main/libs/charts.md
 novy MAVEN projekt + stahnut Jfreechart kniznicu z maven repository
 https://mvnrepository.com/artifact/org.jfree/jfreechart/1.5.5
 
-a dat do pom.xml dependencies
+a dat do pom.xml dependencies:
 ![image](https://github.com/user-attachments/assets/c929ca4d-9b2e-4b4c-a7e1-443540632291)
 
 
