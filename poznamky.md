@@ -910,3 +910,296 @@ void main() throws IOException {
     System.out.println(w_c_words);
 }
 ```
+
+
+## OOP
+
+https://github.com/janbodnar/Java-Skolenie/blob/main/oop/objects.md
+
+```java
+import java.util.List;
+import java.util.Random;
+
+class Base {}
+class Planet {}
+
+void main() {
+
+    //rozne typy objektov ... dame predka = Object
+    List<Object> obs = List.of(new Base(), new Planet(), new Base(), new Planet(),
+            new Base(), new Planet(), new Base(), new Base(), new Planet() );
+
+    var r = new Random();
+
+    for (int i = 0; i < 10; i++) {
+    //nahodne indexy hadze od 1 az po obs.size()-1
+        int idx = r.nextInt(obs.size());
+
+        System.out.println(idx);
+        var o = obs.get(idx);
+    //zistuje akej triedy je objekt Base alebo Planet
+        if (o instanceof Base) {
+            System.out.println("Base");
+        }
+
+        if (o instanceof Planet) {
+            System.out.println("Planet");
+        }
+    }
+}
+```
+
+
+
+##User trieda - treba vytvorit equals() and hashCode(); set, get, toString
+
+
+```java
+import java.util.Objects;
+
+public class User {
+    private String name;
+    private int age;
+
+    public User(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+//Generate -> equals() and hasCode()
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return age == user.age && Objects.equals(name, user.name);
+    }
+
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "name='" + name + '\'' +
+                ", age=" + age +
+                '}';
+    }
+}
+```
+
+## main trieda
+
+```java
+import java.util.List;
+import java.util.Random;
+
+class Base {}
+class Planet {}
+
+//hash
+//equalc
+
+void main() {
+User u1 = new User("Joe Doe",34);
+User u2 = new User("Joe Doe",34);
+    System.out.println(u1);
+    System.out.println(u2);
+
+
+    System.out.println(u1.equals(u2));
+    System.out.println(u1 == u2);
+
+}
+```
+
+## nahradenie samostatnej triedy User jednym riadom: main triede
+##//automaticky vytvori equals() and hashCode(); set, get, toString
+##record User(String name, int age){
+
+
+```java
+import java.util.List;
+import java.util.Random;
+
+class Base {}
+class Planet {}
+
+//hash
+//equalc
+
+void main() {
+User u1 = new User("Joe Doe",34);
+User u2 = new User("Joe Dee",34);
+User u3= new User("Joe Doe",34);
+    System.out.println(u1);
+    System.out.println(u2);
+    System.out.println(u3);
+
+
+    System.out.println(u1.equals(u2));
+    System.out.println(u1.equals(u3));
+    System.out.println(u1 == u2);
+
+}
+//automaticky vytvori equals() and hashCode(); set, get, toString
+record User(String name, int age){}
+
+
+
+
+## Sorting record
+
+
+https://github.com/janbodnar/Java-Skolenie/blob/main/record.md
+
+```java
+void main() {
+
+    var users = List.of(
+            new User("John", "Doe", 1230),
+            new User("Lucy", "Novak", 670),
+            new User("Ben", "Walter", 2050),
+            new User("Robin", "Brown", 2300),
+            new User("Amy", "Doe", 1250),
+            new User("Joe", "Draker", 1190),
+            new User("Janet", "Doe", 980),
+            new User("Albert", "Novak", 1930));
+
+    var sorted = users.stream().sorted(Comparator.comparing(User::lastName).reversed()).toList();
+
+    sorted.forEach(System.out::println);
+}
+
+record User(String firstName, String lastName, int salary) {
+}
+```
+
+##ENUM
+
+enum Day {
+
+    MONDAY,
+    TUESDAY,
+    WEDNESDAY,
+    THURSDAY,
+    FRIDAY,
+    SATURDAY,
+    SUNDAY
+}
+
+void main() {
+    //ciselna hodnota volby ordinal();
+    System.out.println(Day.MONDAY.ordinal());
+    System.out.println(Day.THURSDAY.ordinal());
+
+    Day day = Day.MONDAY;
+
+    if (day == Day.MONDAY) {
+
+        System.out.println("It is Monday");
+    }
+
+    System.out.println(day);
+
+    for (Day d : Day.values()) {
+
+        System.out.println(d);
+    }
+}
+
+## dalsi priklad na ENUM, kde doplnime ENUM  MaritalStatus 
+
+```java
+import java.util.List;
+
+void main() {
+
+    List<User> users = List.of(
+            new User("Jack", "jack234@gmail.com"),
+            new User("Peter", "pete2@post.com"),
+            new User("Lucy", "lucy17@gmail.com"),
+            new User("Robert", "bob56@post.com"),
+            new User("Martin", "mato4@imail.com")
+    );
+
+    List<User> res = users.stream()
+            .filter(user -> user.email().matches(".*post.com"))
+            .toList();
+
+    res.forEach(p -> System.out.println(p.name()));
+}
+
+record User(String name, String email) {
+}
+```
+
+
+
+##zmenene vyssie : pridane ENUM  MaritalStatus a vypis MARRIED
+
+
+```java
+import java.util.List;
+
+void main() {
+
+    List<User> users = List.of(
+            new User("Jack", "jack234@gmail.com", MaritalStatus.SIVORCED),
+            new User("Peter", "pete2@post.com", MaritalStatus.SINGLE),
+            new User("Lucy", "lucy17@gmail.com", MaritalStatus.SIVORCED),
+            new User("Robert", "bob56@post.com", MaritalStatus.MARRIED),
+            new User("Martin", "mato4@imail.com",MaritalStatus.SINGLE)
+    );
+
+     List<User> res = users.stream().filter(user -> user.maritalStatus()==MaritalStatus.MARRIED).toList();
+
+    res.forEach(p -> System.out.println(p.name()));
+}
+
+record User(String name, String email, MaritalStatus maritalStatus) {
+}
+
+enum MaritalStatus{
+    SINGLE,
+    MARRIED,
+    SIVORCED
+}
+```
+
+
+## pretypovanie
+
+```java
+import java.util.List;
+
+void main() {
+    int i= 15000;
+    long n=i;
+    System.out.println(i);
+    System.out.println(n);
+
+    long n2= 150000L;
+    int i2= (int) n2; //ak som si isty, ze sa zmesti, tak mozem nasilu pretypovat; ak je vacsie ako int, tak dojde k preteceniu
+    System.out.println(n);
+    System.out.println(i2);
+
+    //pretypovanie Srting na Int
+    String val="1234";
+    int val2 = Integer.parseInt(val);
+    System.out.println(val2);
+}
+```
