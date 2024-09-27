@@ -820,3 +820,93 @@ public class LabelEx extends JFrame {
 
 ![image](https://github.com/user-attachments/assets/0bc8d1dd-8d47-4b1e-972b-a6c3fffe4232)
 
+
+## Stahovanie projektov z GITHUB
+
+![image](https://github.com/user-attachments/assets/315d3b19-b895-47fb-aa8a-86008278eecf)
+
+##Sorting
+
+
+```java
+import java.util.Comparator;
+import java.util.List;
+
+void main() {
+
+    List<String> words = List.of("sky", "pen", "new", "rock", "war", "water");
+    System.out.println(words);
+
+    List<String> filtered = words.stream().filter(word -> word.startsWith("w")).toList();
+    System.out.println(filtered);
+
+    List<String> sorted = words.stream().sorted(Comparator.naturalOrder()).toList();
+    System.out.println(sorted);
+
+    List<String> reversed = words.stream().sorted(Comparator.reverseOrder()).toList();
+    System.out.println(reversed);
+}
+```
+
+##forEach
+
+```java
+import java.util.Arrays;
+import java.util.List;
+
+void main() {
+
+    List<String> words = List.of("sky", "pen", "new", "rock", "war", "water");
+
+    System.out.println(words);
+
+//    words.forEach(word -> System.out.println(word));
+    words.forEach(System.out::println);
+    
+//    for (String word: words) {
+//        System.out.println(word);
+//    }
+
+    int[] vals = {1, 2, 3, 4, 5};
+    Arrays.stream(vals).forEach(System.out::println);
+}
+```
+
+
+##Filtrovanie slov zo suboru
+
+```java
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+
+void main() throws IOException {
+
+    List<String> w_words = new ArrayList<>();
+    List<String> w_c_words = new ArrayList<>();
+
+    String fileName = "words.txt";
+    Path filePath = Path.of(fileName);
+
+    List<String> lines = Files.readAllLines(filePath);
+
+    for (String line: lines) {
+
+        if (line.startsWith("w")) {
+            w_words.add(line);
+        }
+    }
+
+    for (String line: lines) {
+
+        if (line.startsWith("w") || line.startsWith("c") ) {
+            w_c_words.add(line);
+        }
+    }
+
+    System.out.println(w_words);
+    System.out.println(w_c_words);
+}
+```
