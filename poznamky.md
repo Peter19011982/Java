@@ -1594,3 +1594,274 @@ void main() throws IOException, CsvValidationException {
 }
 record  User(String firstname, String lastName, String occupation){}
 ```
+
+
+## Praca s WEB
+
+
+## nacitanie obsahu stranky - content
+
+
+```java
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
+void main() throws IOException, InterruptedException {
+
+    URI uri = URI.create("https://webcode.me/");
+    HttpRequest request = HttpRequest.newBuilder(uri).build();
+
+    try (HttpClient client = HttpClient.newHttpClient()){
+        // vrati body stranky
+        String content = client.send(request, HttpResponse.BodyHandlers.ofString()).body();
+        System.out.println(content);
+        // discarding()  - nepotrebujem obsah, staci mi statusCode
+        int status = client.send(request, HttpResponse.BodyHandlers.discarding()).statusCode();
+        System.out.println(status);
+    }
+}
+```
+
+
+```java
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.util.ArrayList;
+import java.util.List;
+
+void main() throws IOException, InterruptedException {
+
+    URI uri1 = URI.create("https://webcode.me");
+    URI uri = URI.create("https://webcode.me/users.csv");
+    HttpRequest request1 = HttpRequest.newBuilder(uri1).build();
+    HttpRequest request = HttpRequest.newBuilder(uri).build();
+    List<User> users = new ArrayList<>();
+    try (HttpClient client = HttpClient.newHttpClient()){
+        // vrati body stranky
+        String content1 = client.send(request1, HttpResponse.BodyHandlers.ofString()).body();
+        String content = client.send(request, HttpResponse.BodyHandlers.ofString()).body();
+        System.out.println(content1);
+        System.out.println(content);
+        // discarding()  - nepotrebujem obsah, staci mi statusCode
+        int status = client.send(request1, HttpResponse.BodyHandlers.discarding()).statusCode();
+        System.out.println(status);
+
+        //poseka mi to obsah csv na riadky; nechcem 1. riadok (hlavicka); nechcme posledny riadok, lebo ten je prazdny
+        List<String> lines = content.lines().skip(1).limit(100).toList();
+        System.out.println(lines);
+
+        lines.forEach(line ->{
+            String[] fields = line.split(",",4);
+            User user = new User(Integer.parseInt(fields[0]),fields[1],fields[2], fields[3]);
+            users.add(user);
+        });
+        //vypisem prvych 10
+        users.stream().limit(10).forEach(System.out::println);
+        // vypisem prvych 10 bez id-cok
+        users.stream().limit(10).forEach(user -> System.out.printf("%s %s %s %n", user.firstname(), user.lastName(), user.occupation()));
+    }
+}
+record  User(int id, String firstname, String lastName, String occupation){}
+```
+
+##Staticke metody
+
+https://github.com/janbodnar/Java-Skolenie/blob/main/oop/static.md
+
+## zakomentovane je keby bola Basic tiada statiska, odkomentovane je, ked je clenska (volam ju ako novy objekt v Main triede)
+
+
+```java
+package com.zetcode;
+
+class Basic {
+
+//    static int id = 2321;
+    int id = 2321;
+    public void showInfo() {
+
+        System.out.println("This is Basic class");
+        System.out.format("The Id is: %d%n", id);
+    }
+}
+
+public class Main {
+
+    public static void main(String[] args) {
+        Basic info = new Basic();
+        info.showInfo();
+//        Basic.showInfo();
+    }
+}
+```
+
+## staticka premenna count v Beeing a v ostatnych tiredach Extendovanch dedena
+
+```java
+package com.zetcode;
+
+import java.util.ArrayList;
+import java.util.List;
+
+class Being {
+    public static int count = 0; // Initialize count
+}
+
+class Cat extends Being {
+    public Cat() {
+        count++;
+    }
+}
+
+class Dog extends Being {
+    public Dog() {
+        count++;
+    }
+}
+
+class Donkey extends Being {
+    public Donkey() {
+        count++;
+    }
+}
+
+public class Main { // Added class declaration
+    public static void main(String[] args) { // Corrected main method signature
+        List<Being> beings = new ArrayList<>();
+
+        beings.add(new Cat());
+        beings.add(new Cat());
+        beings.add(new Cat());
+        beings.add(new Dog());
+        beings.add(new Donkey());
+
+        int nOfBeings = Being.count;
+
+        System.out.format("There are %d beings %n", nOfBeings);
+    }
+}
+```
+
+
+## PostGreQQL
+
+https://www.enterprisedb.com/postgresql-tutorial-resources-training-2?uuid=69f95902-b451-4735-b7e4-1b62209d4dfd&campaignId=postgres_rc_17
+
+stiahnut PotgreDB a nainstalovat -> spustit pgAdmin -> vytvorit DB testdb
+MAEVEN + do pom.xml pridat dependences:
+https://mvnrepository.com/artifact/org.postgresql/postgresql/42.7.4
+
+
+```java
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+void main() {
+
+    String query = "SELECT VERSION()";
+    String username = "postgres";
+    String password = "postgre";
+
+    try (Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/testdb", username, password);
+         Statement st = con.createStatement();
+         ResultSet rs = st.executeQuery(query)) {
+
+        if (rs.next()) {
+
+            System.out.println(rs.getString(1));
+        }
+
+    } catch (SQLException ex) {
+
+        Logger lgr = Logger.getLogger(getClass().getName());
+        lgr.log(Level.SEVERE, ex.getMessage(), ex);
+    }
+}
+```
+
+##naplnenie DB tabulky:
+DROP TABLE IF EXISTS countries;
+CREATE TABLE countries(id serial PRIMARY KEY, name VARCHAR(255), population INTEGER);
+INSERT INTO countries(name, population) VALUES('China', 1382050000);
+INSERT INTO countries(name, population) VALUES('India', 1313210000);
+INSERT INTO countries(name, population) VALUES('USA', 324666000);
+INSERT INTO countries(name, population) VALUES('Indonesia', 260581000);
+INSERT INTO countries(name, population) VALUES('Brazil', 207221000);
+INSERT INTO countries(name, population) VALUES('Pakistan', 196626000);
+INSERT INTO countries(name, population) VALUES('Nigeria', 186988000);
+INSERT INTO countries(name, population) VALUES('Bangladesh', 162099000);
+INSERT INTO countries(name, population) VALUES('Russia', 146838000);
+INSERT INTO countries(name, population) VALUES('Japan', 126830000);
+INSERT INTO countries(name, population) VALUES('Mexico', 122273000);
+INSERT INTO countries(name, population) VALUES('Philippines', 103738000);
+INSERT INTO countries(name, population) VALUES('Ethiopia', 101853000);
+INSERT INTO countries(name, population) VALUES('Vietnam', 92700000);
+INSERT INTO countries(name, population) VALUES('Egypt', 92641000);
+INSERT INTO countries(name, population) VALUES('Germany', 82800000);
+INSERT INTO countries(name, population) VALUES('the Congo', 82243000);
+INSERT INTO countries(name, population) VALUES('Iran', 82800000);
+INSERT INTO countries(name, population) VALUES('Turkey', 79814000);
+INSERT INTO countries(name, population) VALUES('Thailand', 68147000);
+INSERT INTO countries(name, population) VALUES('France', 66984000);
+INSERT INTO countries(name, population) VALUES('United Kingdom', 60589000);
+INSERT INTO countries(name, population) VALUES('South Africa', 55908000);
+INSERT INTO countries(name, population) VALUES('Myanmar', 51446000);
+INSERT INTO countries(name, population) VALUES('South Korea', 68147000);
+INSERT INTO countries(name, population) VALUES('Colombia', 49129000);
+INSERT INTO countries(name, population) VALUES('Kenya', 47251000);
+INSERT INTO countries(name, population) VALUES('Spain', 46812000);
+INSERT INTO countries(name, population) VALUES('Argentina', 43850000);
+INSERT INTO countries(name, population) VALUES('Ukraine', 42603000);
+INSERT INTO countries(name, population) VALUES('Sudan', 41176000);
+INSERT INTO countries(name, population) VALUES('Algeria', 40400000);
+INSERT INTO countries(name, population) VALUES('Poland', 38439000);
+
+
+## java code select z DB:
+
+
+```java
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+void main() {
+        //String query = "SELECT VERSION()";
+        String username = "postgres";
+        String password = "postgre";
+        String query = "SELECT * FROM countries";
+
+        try (Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/testdb", username, password);
+        PreparedStatement pst = con.prepareStatement(query);
+        ResultSet rs = pst.executeQuery()) {
+
+        while (rs.next()) {
+
+        System.out.printf("%d %s %d%n", rs.getInt(1),
+        rs.getString(2), rs.getInt(3));
+        }
+
+        } catch (SQLException ex) {
+
+        Logger lgr = Logger.getLogger(getClass().getName());
+        lgr.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        }
+```
