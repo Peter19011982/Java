@@ -1,6 +1,6 @@
 # Java 
 
-Moje poznamky   
+## Pole int-tov - ulohy
 
 
 ```java
@@ -12,7 +12,7 @@ void main() {
     int[] vals = {1,2,3,4,5,6};
     //calculate sum
     //print first and last element
-    // itterate from last to front
+    //itterate from last to front
     int sum=0;
 
     for (int val : vals){
