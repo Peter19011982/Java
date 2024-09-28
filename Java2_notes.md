@@ -33,6 +33,7 @@ void main() {
 }
 ```
 
+
 ##Nacitanie zo suboru, pridali sme Exception 'throws IOException'
 
 
