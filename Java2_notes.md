@@ -33,7 +33,7 @@ void main() {
 }
 ```
 
-Nacitanie zo suboru, pridali sme Exception 'throws IOException'
+##Nacitanie zo suboru, pridali sme Exception 'throws IOException'
 
 
 ```java
@@ -57,7 +57,7 @@ void main() throws IOException {
 }
 ```
 
-Polia
+##Polia
 
 
 https://github.com/janbodnar/Java-Skolenie/blob/main/collections/arraylist.md
