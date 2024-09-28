@@ -34,7 +34,7 @@ void main() {
 ```
 
 
-##Nacitanie zo suboru, pridali sme Exception 'throws IOException'
+## Nacitanie zo suboru, pridali sme Exception 'throws IOException'
 
 
 ```java
@@ -58,7 +58,7 @@ void main() throws IOException {
 }
 ```
 
-##Polia
+## List-y
 
 
 https://github.com/janbodnar/Java-Skolenie/blob/main/collections/arraylist.md
@@ -138,7 +138,8 @@ void fillList(List<String> data) {
 }
 ```
 
-Podmienecne vymazanie cisel/slov z Listu:
+## Podmienecne vymazanie cisel/slov z Listu:
+
 
 ```java
 import java.util.ArrayList;
@@ -171,7 +172,7 @@ void main() {
 }
 ```
 
-Program nacita words.txt a vypise najprav slova zacinajuce na w a porom zacinajuce na w alebo c:
+## Program nacita words.txt a vypise najprav slova zacinajuce na w a porom zacinajuce na w alebo c:
 
 ```
 import java.io.IOException;
@@ -211,7 +212,7 @@ void main() throws IOException {
 }
 ```
 
-Hashe = mapy a praca s nimi
+## Hashe = mapy a praca s nimi
 https://github.com/janbodnar/Java-Skolenie/blob/main/collections/hashmap.md
 
 ```
@@ -258,7 +259,7 @@ void main() {
 ```
 
 
-program, ktory spocita znaky v danej vete a vypise ich pocet:
+## Program, ktory spocita znaky v danej vete a vypise ich pocet:
 
 
 ```
@@ -292,7 +293,7 @@ void main() {
 }
 ```
 
-Iteracia cez pary:
+## Iteracia cez pary:
 
 
 ```
@@ -314,7 +315,7 @@ void main() {
 }
 ```
 
-Iteracia cez kluc:
+## Iteracia cez kluc:
 
 ```
 import java.util.HashMap;
@@ -339,7 +340,8 @@ void main() {
 ```
 
 
-Iterovanie cez hodnoty:
+## Iterovanie cez hodnoty:
+
 
 ```
 import java.util.Collection;
@@ -414,10 +416,10 @@ public class User {
 
 ## DATABAZY 
 Novy Java projek v Int.Idea  - Maven (nie intIdea)
-
 https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc/3.46.1.0
 
 ![image](https://github.com/user-attachments/assets/77bc70ab-20d2-42bb-9f63-a25f6daad6b0)
+
 
 ```java
 import java.sql.Connection;
@@ -456,7 +458,8 @@ https://github.com/janbodnar/Java-Skolenie/blob/main/db/sqlite.md
 
 
 
-pouzite try catch blokov
+## pouzite try catch blokov
+
 
 ```java
 import java.sql.Connection;
@@ -495,8 +498,9 @@ void main() {
 https://github.com/janbodnar/Java-Skolenie/blob/main/db/sqlite.md
 https://github.com/janbodnar/Java-Skolenie/blob/main/db/sql.md
 
-BROWSER SQLite DB
+## SQLite DB
 https://sqlitebrowser.org/dl/
+
 
 ```java
 import java.sql.Connection;
