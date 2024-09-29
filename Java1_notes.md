@@ -1,19 +1,26 @@
 # Java
-Download IntelliJ IDEA – The Leading Java and Kotlin IDE (jetbrains.com)
--	Community edition
+## Instalacia 
+
+1. Download IntelliJ IDEA – The Leading Java and Kotlin IDE (jetbrains.com)  --> Community edition
+https://www.jetbrains.com/idea/download/?fromIDE=%2F&section=windows
 
  ![image](https://github.com/user-attachments/assets/9d504739-0d7f-485e-933a-ed85bbd53fef)
 
 
+## Skolenie
+
 
 https://github.com/janbodnar/Java-Skolenie
-Java-Skolenie/definitions.md at main · janbodnar/Java-Skolenie · GitHub
-Java-Skolenie/basics.md at main · janbodnar/Java-Skolenie · GitHub
+https://github.com/janbodnar/Java-Skolenie/blob/main/definitions.md
+https://github.com/janbodnar/Java-Skolenie/blob/main/basics.md
+
 
 Test.md - vsetky priklady zo skolenia:
-Java-Skolenie/test.md at main · janbodnar/Java-Skolenie · GitHub
+https://github.com/janbodnar/Java-Skolenie/blob/main/test.md
 
--	Zjednodusena syntax class Main pre edukacne ucely od java 21, 22
+-	Zjednodusena syntax class Main pre edukacne ucely od java 21, 22:
+
+```java
 void main() {
 
     int age = 34;
@@ -23,12 +30,12 @@ void main() {
 
     System.out.println(output);
 }
+```
 
 
-Java-Skolenie/lexis.md at main · janbodnar/Java-Skolenie · GitHub
+[Java-Skolenie/lexis.md at main · janbodnar/Java-Skolenie · GitHub](https://github.com/janbodnar/Java-Skolenie/blob/main/lexis.md)
 Zdrojovy kod je tvoreny tokenmi
 reformatovat kod : Ctrl+ Alt + l
-
 Priklady:
 
 
@@ -82,12 +89,14 @@ void main() {
 }
 ```
 
+
 ## Flow control
 
 
-Java-Skolenie/flow_control.md at main · janbodnar/Java-Skolenie · GitHub
+https://github.com/janbodnar/Java-Skolenie/blob/main/flow_control.md
 
-## „case“
+
+## „case“ - The switch statement
 
 
 ```java
@@ -156,6 +165,7 @@ void main() {
 }
 ```
 
+
 ```java
 import java.util.Scanner;
 
@@ -183,7 +193,7 @@ void main() {
 ```
 
 
-## WHILE:
+## WHILE - The while statement
 
 
 void main() {
@@ -198,12 +208,14 @@ void main() {
     }
 }
 
-FOR:
+## FOR - The for statement
+
 
 Premenne prostredia
 String heslo = System.getenv("DB_PASSWORD")
 
 
+```java
 void main() {
 
     int i = 0;
@@ -223,10 +235,12 @@ void main() {
     String heslo = System.getenv("DB_PASSWD");
     System.out.println(heslo);
 }
+```
+
+## Polia + for each cyklus - Enhanced for statement
 
 
-
-Polia + for each cyklus
+```java
 void main() {
     String[] planets = {
                 "Mercury", "Venus", "Earth",
@@ -237,11 +251,11 @@ void main() {
 
             System.out.println(planet);
         }
-
 }
+```
 
 
-
+```java
 void main() {
     String[] planets = {
             "Mercury", "Venus", "Earth",
@@ -270,8 +284,13 @@ void main() {
     }
     System.out.println(sum);
 }
+```
 
-nova syntax:
+## nova a stara syntax
+
+
+```java
+//nova syntax:
 void main() {
     String[] planets = {
             "Mercury", "Venus", "Earth",
@@ -292,6 +311,7 @@ void main() {
     for (String planet : planets) {
         System.out.println(planet);
         }
+
     //stara syntax 
     int sum = 0;
     int[] vals = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
@@ -308,7 +328,7 @@ void main() {
     }
     System.out.println("nova syntax: "+suma);
 }
-
+```
 
 
 The break statement:
