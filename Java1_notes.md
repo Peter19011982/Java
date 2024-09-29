@@ -25,11 +25,11 @@ https://github.com/janbodnar/Java-Skolenie/blob/main/test.md
 void main() {
 
    int age = 34;
-        String name = "William";
-        String output = String.format("%s is %d years old.", name, age);
-        System.out.println(output);
-        //rychlejsia alternativa vypisu
-        System.out.printf("%s is %d years old.", name, age);
+   String name = "William";
+   String output = String.format("%s is %d years old.", name, age);
+   System.out.println(output);
+   //rychlejsia alternativa vypisu
+   System.out.printf("%s is %d years old.", name, age);
 }
 ```
 
