@@ -34,9 +34,9 @@ void main() {
 
 
 [Java-Skolenie/lexis.md at main · janbodnar/Java-Skolenie · GitHub](https://github.com/janbodnar/Java-Skolenie/blob/main/lexis.md)
-Zdrojovy kod je tvoreny tokenmi
-reformatovat kod : Ctrl+ Alt + l
-Priklady:
+### Zdrojovy kod je tvoreny tokenmi
+### reformatovat kod : Ctrl+ Alt + l
+### Priklady:
 
 
 ```java
