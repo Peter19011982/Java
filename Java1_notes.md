@@ -6,6 +6,7 @@ https://www.jetbrains.com/idea/download/?fromIDE=%2F&section=windows
 
  ![image](https://github.com/user-attachments/assets/9d504739-0d7f-485e-933a-ed85bbd53fef)
 
+2. Mozes pouzit Amazon Corento v 22
 
 ## Skolenie
 
