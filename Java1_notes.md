@@ -10,9 +10,9 @@ https://www.jetbrains.com/idea/download/?fromIDE=%2F&section=windows
 ## Skolenie
 
 
-https://github.com/janbodnar/Java-Skolenie
-https://github.com/janbodnar/Java-Skolenie/blob/main/definitions.md
-https://github.com/janbodnar/Java-Skolenie/blob/main/basics.md
+- https://github.com/janbodnar/Java-Skolenie
+- https://github.com/janbodnar/Java-Skolenie/blob/main/definitions.md
+- https://github.com/janbodnar/Java-Skolenie/blob/main/basics.md
 
 
 Test.md - vsetky priklady zo skolenia:
