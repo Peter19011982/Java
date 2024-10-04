@@ -332,7 +332,9 @@ void main() {
 ```
 
 
-The break statement:
+## The break statement:
+
+```java
 import java.util.Random;
 
 void main() {
@@ -352,8 +354,13 @@ void main() {
 
     System.out.print('\n');
 }
+```java
 
-The continue statement
+
+## The continue statement
+
+
+```java
 void main() {
 
     int num = 0;
@@ -371,10 +378,10 @@ void main() {
 
     System.out.print('\n');
 }
+```
 
 
-
-Priklady
+## Priklady
 Print words in titlecase
 void main() {
 
@@ -386,7 +393,12 @@ void main() {
         
     }
 }
-Generate 10 random integers
+
+
+## Generate 10 random integers
+
+
+```java
 import java.util.Random;
 
 void main() {
@@ -399,7 +411,13 @@ void main() {
         System.out.println(r);
     }
 }
-Calculate sum
+```
+
+
+## Calculate sum
+
+
+```java
 void main() {
 
     int sum = 0;
@@ -412,6 +430,9 @@ void main() {
 
     System.out.println(sum);
 }
+```
+
+```java
 void main() {
 
     int[] vals = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
@@ -425,7 +446,11 @@ void main() {
 
     System.out.println("end of program");
 }
-Formatovany vystup
+```
+
+## Formatovany vystup
+
+```java
 void main() {
 
     int age = 34;
@@ -438,7 +463,12 @@ void main() {
     
     System.out.printf("%s is %d years old and he is a %s, his weight is %f kg", name, age, occupation, weight);
 }
-Premenne
+```
+
+## Premenne
+
+
+```java
 void main() {
 
     String name = "John Doe";
@@ -453,6 +483,9 @@ void main() {
     age = 40;
     System.out.println(age);
 }
+
+
+```java
 void main() {
 
     String name = "John Doe";
@@ -461,14 +494,11 @@ void main() {
 
     System.out.println(name + " is " + age + " years old" + " and he is a " + occupation );
 }
+```
 
 
-
-
-
-
-
--	Vypise vsetky slova zacinajuce na w:
+- Vypise vsetky slova zacinajuce na w:
+```java
 void main() {
 
     String[] words = {"sky", "war", "water", "cup", "cloud", "warm"};
@@ -480,11 +510,13 @@ void main() {
 
     }
 }
+```
 
 
+https://github.com/janbodnar/Java-Skolenie/blob/main/operators.md
 
-Java-Skolenie/operators.md at main · janbodnar/Java-Skolenie · GitHub
 
+```java
 import java.util.Arrays;
 /*
 rozbije retazec cisel na pole stringov, prekonvertuje na integer a spocita:
@@ -499,13 +531,15 @@ void main() {
     }
     System.out.println(sum);
 }
+```
 
-Java-Skolenie/arrays.md at main · janbodnar/Java-Skolenie · GitHub
 
+https://github.com/janbodnar/Java-Skolenie/blob/main/arrays.md
+
+
+```java
 import java.util.Arrays;
-
 void main() {
-
     int[] a = new int[5];
 
     a[0] = 1;
@@ -530,21 +564,16 @@ void main() {
     // existuje cely rad Arrays funkcii
     Arrays.fill(d,1);
     System.out.println((Arrays.toString(d)));
-
 }
+```
+
+## Java spustitelny subor
 
 
-Vytvorenie artefaktu : Hamburger - > Project structure -> Artefacts -> + 
-C:\Users\student\IdeaProjects\FristArchive\out\artifacts\FristArchive_jar
- 
-
-Potom hamburger - > Build Airtifacts - > Build
- 
-
- 
-
-
-Do consoly:
+- Vytvorenie artefaktu : Hamburger - > Project structure -> Artefacts -> + 
+- C:\Users\student\IdeaProjects\FristArchive\out\artifacts\FristArchive_jar
+- Potom hamburger - > Build Airtifacts - > Build
+- Do consoly:
 Najst cd .\artifacts\FristArchive_jar\
 A spustit:
 java -jar .\FristArchive.jar 1 2 3 4 5
