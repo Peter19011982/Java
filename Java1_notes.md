@@ -16,10 +16,11 @@ https://www.jetbrains.com/idea/download/?fromIDE=%2F&section=windows
 - https://github.com/janbodnar/Java-Skolenie/blob/main/basics.md
 
 
-Test.md - vsetky priklady zo skolenia:
+- Test.md - vsetky priklady zo skolenia:
 https://github.com/janbodnar/Java-Skolenie/blob/main/test.md
 
 -	Zjednodusena syntax class Main pre edukacne ucely od java 21, 22:
+
 
 ```java
 void main() {
@@ -483,6 +484,7 @@ void main() {
     age = 40;
     System.out.println(age);
 }
+```
 
 
 ```java
