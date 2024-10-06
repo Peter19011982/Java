@@ -666,7 +666,7 @@ public class Main {
 
 - to iste, ale 2 triedy:
  
-
+```java
 package com.zetcode;
 import com.zetcode.model.Person;
 
@@ -688,6 +688,7 @@ public class Main {
         System.out.println(p2);
     }
 }
+```
 
 
 ```java
@@ -721,10 +722,11 @@ public class Person {
                 '}';
     }
 }
-
+```
 
 
 ## KONSTRUKTOR:
+
 
 ```java
 package com.zetcode;
