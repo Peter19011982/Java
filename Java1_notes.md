@@ -585,10 +585,10 @@ A spustit:
 java -jar .\FristArchive.jar 1 2 3 4 5
  
 
+## Datove typy
 
-Java-Skolenie/data_types.md at main · janbodnar/Java-Skolenie · GitHub
 
-Java-Skolenie/data_types.md at main · janbodnar/Java-Skolenie · GitHub
+https://github.com/janbodnar/Java-Skolenie/blob/main/data_types.md
 Ak su premenne zadefinovane mimo funkciu, tak nadobudaju defaut hodnoty vid. nizsie
 Ak su definovane vo funkcii, tak ich je potrebne nainializovat
 byte b;
@@ -613,15 +613,21 @@ void main() {
 }
 
 
-Objektove programovanie:
-Java-Skolenie/oop/oop.md at main · janbodnar/Java-Skolenie · GitHub
+## Objektove programovanie:
 
+
+https://github.com/janbodnar/Java-Skolenie/tree/main/oop
+https://github.com/janbodnar/Java-Skolenie/blob/main/oop/oop.md
+
+
+```java
 package com.zetcode;
 
 class Person {
 
     private String fName;
     private String lName;
+
     public String getFname() {
         return fName;
     }
@@ -639,7 +645,6 @@ class Person {
     }
     
 }
-
 public class Main {
 
     public static void main(String[] args) {
@@ -656,13 +661,10 @@ public class Main {
         System.out.println(p2.getFname()+" " +p2.getLname());
     }
 }
+```
 
 
-
-2 triedy
- 
-
-
+- to iste, ale 2 triedy:
  
 
 package com.zetcode;
@@ -688,11 +690,12 @@ public class Main {
 }
 
 
+```java
 package com.zetcode.model;
 
 public class Person {
 
-    private String fName;
+        private String fName;
         private String lName;
         public String getFname() {
             return fName;
@@ -721,7 +724,8 @@ public class Person {
 
 
 
-KONSTRUKTOR:
+## KONSTRUKTOR:
+
 
 package com.zetcode;
 import com.zetcode.model.Person;
@@ -744,10 +748,10 @@ public class Main {
         System.out.println(p2);
     }
 }
+```
 
-
+```java
 package com.zetcode.model;
-
 public class Person {
     //konstruktor:
     public Person(String fName, String lName) {
@@ -781,10 +785,44 @@ public class Person {
                 '}';
     }
 }
+```
+
+- iny priklad - vsetky "triedy" v 1 Main triede:
 
 
-
+```java
 package com.zetcode;
+public class Main {
+
+    public static void main(String[] args) {
+
+        Circle c = new Circle(10);
+        System.out.println(c.area());
+        c.setRadius(5);
+        System.out.println(c.area());
+
+        Rectangle r = new Rectangle(2,4);
+        System.out.println(r.getArea());
+
+    }
+
+    class Circle {
+    public Circle(int radius) {
+        this.radius = radius;
+    }
+
+    private int radius;
+
+    public void setRadius(int radius) {
+
+        this.radius = radius;
+    }
+
+    public double area() {
+
+        return this.radius * this.radius * Math.PI;
+    }
+}
 
 class Rectangle {
     private int width;
@@ -815,43 +853,14 @@ class Rectangle {
         return this.height* this.width;
     }
 }
-
-
-class Circle {
-    public Circle(int radius) {
-        this.radius = radius;
-    }
-
-    private int radius;
-
-    public void setRadius(int radius) {
-
-        this.radius = radius;
-    }
-
-    public double area() {
-
-        return this.radius * this.radius * Math.PI;
-    }
 }
-
-public class Main {
-
-    public static void main(String[] args) {
-
-        Circle c = new Circle(10);
-        System.out.println(c.area());
-        c.setRadius(5);
-        System.out.println(c.area());
-
-        Rectangle r = new Rectangle(2,4);
-        System.out.println(r.getArea());
-
-    }
-}
+```
 
 
-rozbite na 2 triedy:
+- rozbite na 2 triedy:
+
+
+```java
 package com.zetcode;
 
 public class Main {
@@ -868,8 +877,10 @@ public class Main {
 
     }
 }
+```
 
 
+```java
 package com.zetcode;
 
 public class Circle {
@@ -889,7 +900,9 @@ public class Circle {
             return this.radius * this.radius * Math.PI;
         }
 }
+```
 
+```java
 package com.zetcode;
 
 public class Rectangle {
@@ -922,6 +935,7 @@ public class Rectangle {
             return this.height* this.width;
         }
 }
+```
 
 
 Poznamky vseobecne:
