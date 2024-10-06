@@ -572,9 +572,13 @@ void main() {
 ## Java spustitelny subor
 
 
-- Vytvorenie artefaktu : Hamburger - > Project structure -> Artefacts -> + 
+- Vytvorenie artefaktu : Hamburger menu - > Project structure -> Artefacts -> +
+![image](https://github.com/user-attachments/assets/e000a074-d3af-41fa-9cd0-68a42a411a80)
+
+![image](https://github.com/user-attachments/assets/d63d1836-4f58-4625-8c59-bd788b55a6aa)
+- Vybrat Main java triedu
+- Potom Hamburger menu - > Build Airtifacts - > Build
 - C:\Users\student\IdeaProjects\FristArchive\out\artifacts\FristArchive_jar
-- Potom hamburger - > Build Airtifacts - > Build
 - Do consoly:
 Najst cd .\artifacts\FristArchive_jar\
 A spustit:
