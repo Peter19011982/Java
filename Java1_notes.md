@@ -726,7 +726,7 @@ public class Person {
 
 ## KONSTRUKTOR:
 
-
+```java
 package com.zetcode;
 import com.zetcode.model.Person;
 
@@ -749,6 +749,7 @@ public class Main {
     }
 }
 ```
+
 
 ```java
 package com.zetcode.model;
@@ -786,6 +787,7 @@ public class Person {
     }
 }
 ```
+
 
 - iny priklad - vsetky "triedy" v 1 Main triede:
 
