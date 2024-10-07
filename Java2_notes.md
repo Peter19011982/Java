@@ -232,7 +232,7 @@ void main() {
     capitals.put("ita", "Rome");
 
     System.out.println(capitals);
-    // podmienecne pridavanie do mapy aj chyba , doplni
+    // podmienecne pridavanie do mapy ak chyba, tak doplni
     capitals.putIfAbsent("rus", "Moscow");
     capitals.putIfAbsent("ita", "Rome");
 
