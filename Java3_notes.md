@@ -1141,7 +1141,7 @@ record User(String firstName, String lastName) {
 }
 ```
 
-# tu pride vypisanie do suboru ??
+# tu pride vypisanie do suboru
 
 '''
 [
@@ -1161,7 +1161,7 @@ record User(String firstName, String lastName) {
     "occupation": "programmer"
   }
 ]
-````
+```
 
 
 ## nacitanie json zo stranky
@@ -1196,6 +1196,7 @@ void main() throws IOException, InterruptedException {
 
 record TimeData(String time, @SerializedName("milliseconds_since_epoch") Long millisecondsSinceEpoch, String date) {
 }
+```
 
 
 ## zapis json do suboru:
