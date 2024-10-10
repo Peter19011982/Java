@@ -2,6 +2,43 @@ JAVA
 ## najlepsi AI chat na java  
 https://www.perplexity.ai/
 
+## ako to vyriesit?
+
+
+```java
+package sk.peter.java1;
+
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+import java.util.stream.Stream;
+
+public class Octal {
+    public static void main(String[] args) throws IOException {
+        String filename = "003100091342.txt";
+        Path myPath = Paths.get("003100091342.txt");
+
+        String content = Files.readString(myPath, StandardCharsets.UTF_8);
+       // System.out.println(content);
+
+//       byte[] c = content.getBytes(StandardCharsets.ISO_8859_1);
+       byte[] c = "<CustomerRelation>Odberate\\304\\276/majite\304\276</CustomerRelation>".getBytes(StandardCharsets.ISO_8859_1);
+       System.out.println(new String(c, StandardCharsets.UTF_8));
+            //System.out.println(c);
+
+    }
+}
+```
+
+
+
+
 ## Opakovanie
 funkcionalne Streamy - 
 
