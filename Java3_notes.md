@@ -85,7 +85,7 @@ void main() throws IOException {
 
 ## DELETE
 
-``java
+```java
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -107,6 +107,7 @@ void main() throws IOException {
 ```
 
 ## Nacitanie a rozsekanie textu do listu slov
+
 
 ```java
 import java.io.IOException;
