@@ -1111,10 +1111,10 @@ void main() {
 }
 
 record User(String firstName, String lastName, Integer sallary){}
-```java
-
-
 ```
+
+
+```java
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
