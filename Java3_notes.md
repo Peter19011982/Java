@@ -1160,18 +1160,75 @@ record TimeData(String time, @SerializedName("milliseconds_since_epoch") Long mi
 
 
 ## zapis json do suboru:
-Miso posle
 
 
+```java
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+ 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
+ 
+void main() throws IOException {
+ 
+    Gson gson = new GsonBuilder().setPrettyPrinting().create();
+ 
+    List<User> users = List.of(new User("John", "Doe", "gardener"),
+            new User("Roger", "Roe", "policeman"),
+            new User("Paul", "Novak", "programmer")
+    );
+ 
+    String output3 = gson.toJson(users);
+    System.out.println(output3);
+ 
+    Path path = Path.of("src/main/resources/user.json");
+ 
+    Files.writeString(path, output3);
+}
+ 
+record User(String firstName, String lastName, String job) {}
+```
 
 
 ## nacitanie json "nepomenovane"
-tu pride kod (Miso posle)
 
 
+```java
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+ 
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.util.List;
+ 
+ 
+void main() throws IOException, InterruptedException {
+ 
+    String webPage = "https://webcode.me/users2.json";
+    URI uri = URI.create(webPage);
+ 
+    try (HttpClient client = HttpClient.newHttpClient()) {
+ 
+        HttpRequest request = HttpRequest.newBuilder(uri).GET().build();
+        String body = client.send(request, HttpResponse.BodyHandlers.ofString()).body();
+ 
+        Gson gson = new Gson();
+        Type userListType = new TypeToken<List<User>>(){}.getType();
+        List<User> users = gson.fromJson(body, userListType);
+        users.forEach(System.out::println);
+    }
+}
+```
 
 
 ## nacitanie jsom "pomenovane":  treba jeden navyse objekt "record" oproti tomu,ked nacitava nepomenovany json
+
 
 ```java
 import com.google.gson.Gson;
