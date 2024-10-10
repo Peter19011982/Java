@@ -1010,3 +1010,211 @@ void main() {
 }
 ```
 
+
+```java
+
+import com.google.gson.Gson;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+void main() {
+
+    Map<Integer, String> colours = new HashMap<>();
+    colours.put(1, "blue");
+    colours.put(2, "yellow");
+    colours.put(3, "green");
+//serializujem na json
+    Gson gson = new Gson();
+
+    String output = gson.toJson(colours);
+
+    System.out.println(output);
+
+    // serializacia Listu
+    List<String> words = List.of("sky","blue","earth");
+    String output2 = gson.toJson(words);
+    
+    //serializacia takehoto objektoveho listu
+    List<User> users = List.of(new User("John", "Doe", 1230),
+            new User("Lucy", "Novak", 670),
+            new User("Ben", "Walter", 2050),
+            new User("Robin", "Brown", 2300),
+            new User("Amy", "Doe", 1250),
+            new User("Joe", "Draker", 1190),
+            new User("Janet", "Doe", 980),
+            new User("Albert", "Novak", 1930));
+
+    String output3 = gson.toJson(users);
+    System.out.println(output3);
+}
+record User(String firstName, String lastName, Integer sallary){}
+```
+
+## Deserializacia:
+
+
+```java
+
+import com.google.gson.Gson;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+void main() {
+
+    String json_string = """
+            {"firstName":"Tom", "lastName": "Broody"}""";
+    Gson gson = new Gson();
+
+    User user = gson.fromJson(json_string, User.class);
+    System.out.println(user);
+}
+
+record User(String firstName, String lastName, Integer sallary){}
+```java
+
+
+```
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
+
+void main() {
+
+    try (var prs = new PrintStream(System.out, true,
+            StandardCharsets.UTF_8)) {
+
+        Gson gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+                .create();
+
+        User user = new User("Peter", "Flemming");
+        gson.toJson(user, prs);
+    }
+}
+
+record User(String firstName, String lastName) {
+}
+```
+
+# tu pride vypisanie do suboru ??
+
+'''
+[
+  {
+    "firstName": "John",
+    "lastName": "Doe",
+    "occupation": "gardener"
+  },
+  {
+    "firstName": "Roger",
+    "lastName": "Roe",
+    "occupation": "teacher"
+  },
+  {
+    "firstName": "Paul",
+    "lastName": "Novak",
+    "occupation": "programmer"
+  }
+]
+````
+
+
+## nacitanie json zo stranky
+
+
+import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
+
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
+
+void main() throws IOException, InterruptedException {
+
+    String webPage = "http://time.jsontest.com";
+    URI uri = URI.create(webPage);
+
+    try (HttpClient client = HttpClient.newHttpClient()) {
+
+        HttpRequest request = HttpRequest.newBuilder(uri).GET().build();
+        String body = client.send(request, HttpResponse.BodyHandlers.ofString()).body();
+
+        Gson gson = new Gson();
+        TimeData td = gson.fromJson(body, TimeData.class);
+
+        System.out.println(td);
+    }
+}
+
+record TimeData(String time, @SerializedName("milliseconds_since_epoch") Long millisecondsSinceEpoch, String date) {
+}
+
+
+## zapis json do suboru:
+Miso posle
+
+
+
+
+## nacitanie json "nepomenovane"
+tu pride kod (Miso posle)
+
+
+
+
+## nacitanie jsom "pomenovane":  treba jeden navyse objekt "record" oproti tomu,ked nacitava nepomenovany json
+
+```java
+import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
+import com.google.gson.reflect.TypeToken;
+
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.util.List;
+
+
+void main() throws IOException, InterruptedException {
+
+    URI uri = URI.create("https://webcode.me/users.json");
+    HttpRequest request = HttpRequest.newBuilder(uri).build();
+
+    var gson = new Gson();
+    List<User> users;
+    UsersResponse response;
+
+    try (HttpClient client = HttpClient.newHttpClient()) {
+
+        String content = client.send(request,
+                HttpResponse.BodyHandlers.ofString()).body();
+
+        Type usersResponseType = new TypeToken<UsersResponse>() {}.getType();
+        response = gson.fromJson(content, usersResponseType);
+
+        for (var user : response.users()) {
+            System.out.println(user);
+        }
+    }
+}
+//treba jeden navyse objekt oproti tomu,ked nacitava nepomenovany json 
+record UsersResponse(List<User> users) {
+}
+
+record User(int id, @SerializedName("first_name") String firstName,
+            @SerializedName("last_name") String lastName, String email) {
+}
+
+
