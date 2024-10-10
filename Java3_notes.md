@@ -650,7 +650,363 @@ void main() {
 }
 ```
 
+## nacitanie suboru z web http requestom
 
 
+```java
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+void main() throws IOException, InterruptedException {
+    //ideme nacitat data zo suboru zweb stranky
+    var uri= URI.create("https://www.mit.edu/~ecprice/wordlist.10000");
+    try (HttpClient client = HttpClient.newHttpClient()){
+        HttpRequest request= HttpRequest.newBuilder(uri).GET().build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        String body = response.body();
+        Path path = Path.of("src/resources/words2");
+        Files.writeString(path, body);
+   }
+}
+```
+
+## Regex words from web
+
+
+```java
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Stream;
+
+void main() throws IOException, InterruptedException {
+
+    var uri = URI.create("https://www.mit.edu/~ecprice/wordlist.10000");
+
+    try (HttpClient client = HttpClient.newHttpClient()) {
+
+        HttpRequest request = HttpRequest.newBuilder(uri).GET().build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        Pattern pattern = Pattern.compile(".{10}");
+        String body = response.body();
+
+        List<String> lines = body.lines().toList();
+        List<String> found = new ArrayList<>();
+
+        for (String line : lines) {
+            Matcher m = pattern.matcher(line);
+
+            if (m.matches()) {
+                found.add(line);
+            }
+        }
+
+        System.out.println(found.size());
+
+        Path path = Path.of("src/resources/words_10.txt");
+        Files.write(path, found);
+
+//        Path path = Path.of("src/resources/words.txt");
+//        Files.writeString(path, body);
+
+    }
+}
+```
+
+## Exceptions 
+
+
+https://github.com/janbodnar/Java-Skolenie/blob/main/exceptions.md
+
+## Filters null
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+void main() {
+
+    List<String> words = new ArrayList<>() {{
+        add("sky");
+        add(null);
+        add("blue");
+        add(null);
+        add("cloud");
+        add(null);
+        add("ocean");
+    }};
+
+    List<String> cleaned = words.stream().filter(word -> word != null).toList();
+
+    cleaned.forEach(word -> {
+        System.out.printf("The %s word has %d letters%n", word, word.length());
+    });
+}
+```
+
+- vynimka zadania nespravnej hodnoty - ocakava sa int cislo
+
+```java
+import java.util.InputMismatchException;
+import java.util.Scanner;
+import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+void main() {
+
+    Locale.setDefault(Locale.ENGLISH);
+
+    System.out.print("Enter an integer: ");
+
+    try {
+
+        try (Scanner sc = new Scanner(System.in)) {
+
+            int x = sc.nextInt();
+            System.out.println(x);
+        }
+
+    } catch (InputMismatchException e) {
+
+        Logger.getLogger(getClass().getName()).log(Level.SEVERE,
+                "wrong data entered");
+    }
+}
+```
+
+
+## v pripade Exceptions sa musia uzatvorit aj zdroje "finally" -nie je to prax, v praxi sa pouzivaju uz kniznice, ktore to vsetko osetri za nas
+
+
+```java
+package com.zetcode;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+public class MySqlVersionEx {
+
+    public static void main(String[] args) {
+
+        Connection con = null;
+        Statement st = null;
+        ResultSet rs = null;
+
+        String url = "jdbc:mysql://localhost:3306/testdb?useSsl=false";
+        String user = "testuser";
+        String password = "test623";
+
+        try {
+
+            con = DriverManager.getConnection(url, user, password);
+            st = con.createStatement();
+            rs = st.executeQuery("SELECT VERSION()");
+
+            if (rs.next()) {
+
+                System.out.println(rs.getString(1));
+            }
+
+        } catch (SQLException ex) {
+
+            Logger lgr = Logger.getLogger(MySqlVersionEx.class.getName());
+            lgr.log(Level.SEVERE, ex.getMessage(), ex);
+
+        } finally {
+
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException ex) {
+                    Logger lgr = Logger.getLogger(MySqlVersionEx.class.getName());
+                    lgr.log(Level.SEVERE, ex.getMessage(), ex);
+                }
+            }
+
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (SQLException ex) {
+                    Logger lgr = Logger.getLogger(MySqlVersionEx.class.getName());
+                    lgr.log(Level.SEVERE, ex.getMessage(), ex);
+                }
+            }
+
+            if (con != null) {
+                try {
+                    con.close();
+                } catch (SQLException ex) {
+                    Logger lgr = Logger.getLogger(MySqlVersionEx.class.getName());
+                    lgr.log(Level.SEVERE, ex.getMessage(), ex);
+                }
+            }
+        }
+    }
+}
+```
+
+- e.printStackTrace() sa pouziva len pre vyvoj ucely, ked chcem vo vyvoji si vypisat chybu
+
+```java
+package com.zetcode;
+
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+
+public class IOExceptionEx {
+
+    private static FileReader fr;
+
+    public static void main(String[] args) {
+
+        try {
+
+            char[] buf = new char[1024];
+
+            fr = new FileReader("src/resources/data.txt", StandardCharsets.UTF_8);
+
+            while (fr.read(buf) != -1) {
+
+                System.out.println(buf);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+
+            if (fr != null) {
+                try {
+                    fr.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+}
+```
+
+## Pripad, ked vyvojar zada vynimku
+
+```java
+import java.util.InputMismatchException;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+void main() {
+
+    System.out.print("Enter your age: ");
+
+    try {
+
+        try (Scanner sc = new Scanner(System.in)) {
+
+            short age = sc.nextShort();
+
+            if (age <= 0 || age > 130) {
+
+                throw new IllegalArgumentException("Incorrect age");
+            }
+
+            System.out.format("Your age is: %d %n", age);
+        }
+
+    } catch (IllegalArgumentException | InputMismatchException e) {
+
+        Logger.getLogger(getClass().getName()).log(Level.SEVERE,
+                e.getMessage(), e);
+    }
+}
+```
+
+## vlastne vynimky extendovanim triedy Exception
+
+
+```java
+package com.zetcode;
+
+class BigValueException extends Exception {
+
+  public BigValueException(String message) {
+
+        super(message);
+    }
+}
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        int x = 340004;
+        final int LIMIT = 333;
+
+        try {
+
+            if (x > LIMIT) {
+
+                throw new BigValueException("Exceeded the maximum value");
+            }
+
+        } catch (BigValueException e) {
+
+            System.out.println(e.getMessage());
+        }
+    }
+}
+```
+
+## Serializacia (do json, xml...) a spat Deserializacia
+https://github.com/janbodnar/Java-Skolenie/blob/main/libs/gson.md
+New project maven
+![image](https://github.com/user-attachments/assets/de4bb426-d39a-45a0-bbaf-ed95d11cc16f)
+
+https://mvnrepository.com/artifact/com.google.code.gson/gson/2.11.0
+![image](https://github.com/user-attachments/assets/fd7af3f7-0741-4bd3-9c54-2e300a1e5744)
+
+
+```java
+
+import com.google.gson.Gson;
+import java.util.HashMap;
+import java.util.Map;
+
+void main() {
+
+    Map<Integer, String> colours = new HashMap<>();
+    colours.put(1, "blue");
+    colours.put(2, "yellow");
+    colours.put(3, "green");
+//serializujem na json
+    Gson gson = new Gson();
+
+    String output = gson.toJson(colours);
+
+    System.out.println(output);
+}
+```
 
