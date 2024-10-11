@@ -2290,10 +2290,120 @@ void main() {
 ```
 
 ## Prakticke priklady
-maven project
-pgadmin install
-https://mvnrepository.com/artifact/org.postgresql/postgresql/42.7.4
-https://mvnrepository.com/artifact/org.jdbi/jdbi3-core/3.45.4
+- maven project
+- pgadmin install
+- https://mvnrepository.com/artifact/org.postgresql/postgresql/42.7.4
+- https://mvnrepository.com/artifact/org.jdbi/jdbi3-core/3.45.4
+
+## kniznica jdbi na pracu s PostgresDB
+- https://github.com/janbodnar/Java-Skolenie/blob/main/db/jdbi.md
+
+- java version:
+
+```java
+import org.jdbi.v3.core.Jdbi;
+
+void main() {
+
+    String jdbcUrl = "jdbc:postgresql://localhost:5432/testdb";
+    String user = "postgres";
+    String password = "s$cret";
+
+    Jdbi jdbi = Jdbi.create(jdbcUrl, user, password);
+
+    String res = jdbi.withHandle(handle -> handle.createQuery("SELECT VERSION()")
+            .mapTo(String.class)
+            .one());
+
+    System.out.println(res);
+}
+```
+
+- Batches
+
+
+  ```java
+  import org.jdbi.v3.core.Jdbi;
+
+void main() {
+
+    String jdbcUrl = "jdbc:postgresql://localhost:5432/testdb";
+    String user = "postgres";
+    String password = "andrea";
+
+    Jdbi jdbi = Jdbi.create(jdbcUrl, user, password);
+
+    jdbi.withHandle(handle -> handle.createBatch()
+            .add("DROP TABLE IF EXISTS cars")
+            .add("CREATE TABLE cars(id serial PRIMARY KEY, name VARCHAR(255), price INT)")
+            .add("INSERT INTO cars(name, price) VALUES('Audi',52642)")
+            .add("INSERT INTO cars(name, price) VALUES('Mercedes',57127)")
+            .add("INSERT INTO cars(name, price) VALUES('Skoda',9000)")
+            .add("INSERT INTO cars(name, price) VALUES('Volvo',29000)")
+            .add("INSERT INTO cars(name, price) VALUES('Bentley',350000)")
+            .add("INSERT INTO cars(name, price) VALUES('Citroen',21000)")
+            .add("INSERT INTO cars(name, price) VALUES('Hummer',41400)")
+            .add("INSERT INTO cars(name, price) VALUES('Volkswagen',21600)")
+
+            .execute());
+
+    System.out.println("Table created and data inserted using JDBI batch.");
+}
+```
+
+- Queries
+
+```java
+import org.jdbi.v3.core.Jdbi;
+
+void main() {
+
+    String jdbcUrl = "jdbc:postgresql://localhost:5432/testdb";
+    String user = "postgres";
+    String password = "s$cret";
+
+    Jdbi jdbi = Jdbi.create(jdbcUrl, user, password);
+
+    String res = jdbi.withHandle(handle -> handle.select("SELECT name FROM cars WHERE id = ?", 3)
+                    .mapTo(String.class)
+                    .one());
+
+
+    System.out.println(res);
+}
+```
+
+- Mappin g row to object class/record
+
+```java
+import java.util.Optional;
+import org.jdbi.v3.core.Jdbi;
+import org.jdbi.v3.core.mapper.reflect.ConstructorMapper;
+
+void main() {
+
+    String jdbcUrl = "jdbc:postgresql://localhost:5432/testdb";
+    String user = "postgres";
+    String password = "s$cret";
+
+    Jdbi jdbi = Jdbi.create(jdbcUrl, user, password);
+
+    int id = 3;
+
+    Optional<Car> res = jdbi.withHandle(handle -> handle.select("SELECT * FROM cars WHERE id = ?", id)
+            .registerRowMapper(Car.class, ConstructorMapper.of(Car.class))
+            .mapTo(Car.class)
+            .findOne());
+
+    res.ifPresentOrElse(System.out::println, () -> System.out.println("N/A"));
+}
+
+public record Car(int id, String name, int price) {
+}
+```
+
+
+- Get ages of users
 
 
 ```java
