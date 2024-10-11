@@ -2289,3 +2289,10 @@ void main() {
 }
 ```
 
+## Prakticke priklady
+maven project
+pgadmin install
+https://mvnrepository.com/artifact/org.postgresql/postgresql/42.7.4
+https://mvnrepository.com/artifact/org.jdbi/jdbi3-core/3.45.4
+
+
