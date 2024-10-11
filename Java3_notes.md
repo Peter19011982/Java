@@ -2300,6 +2300,7 @@ void main() {
 
 - java version:
 
+
 ```java
 import org.jdbi.v3.core.Jdbi;
 
@@ -2319,11 +2320,12 @@ void main() {
 }
 ```
 
+
 - Batches
 
 
   ```java
-  import org.jdbi.v3.core.Jdbi;
+import org.jdbi.v3.core.Jdbi;
 
 void main() {
 
@@ -2351,7 +2353,9 @@ void main() {
 }
 ```
 
+
 - Queries
+
 
 ```java
 import org.jdbi.v3.core.Jdbi;
@@ -2373,7 +2377,9 @@ void main() {
 }
 ```
 
+
 - Mappin g row to object class/record
+
 
 ```java
 import java.util.Optional;
