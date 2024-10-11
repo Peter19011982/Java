@@ -2324,7 +2324,7 @@ void main() {
 - Batches
 
 
-  ```java
+```java
 import org.jdbi.v3.core.Jdbi;
 
 void main() {
@@ -2359,7 +2359,6 @@ void main() {
 
 ```java
 import org.jdbi.v3.core.Jdbi;
-
 void main() {
 
     String jdbcUrl = "jdbc:postgresql://localhost:5432/testdb";
