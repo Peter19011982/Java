@@ -2121,7 +2121,7 @@ public class JSoupAll {
 }
 ```
 
-zmena hodnot tagov
+- zmena hodnot tagov
 
 ```java
 package com.zetcode;
@@ -2147,7 +2147,7 @@ public class Main {
 }
 ```
 
-vyhladanie liniek (externych/internych) na stranke
+- vyhladanie liniek (externych/internych) na stranke
 
 
 ```java
