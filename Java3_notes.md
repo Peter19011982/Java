@@ -1382,3 +1382,474 @@ void main () {
     System.out.println(found);
 }
 ```
+
+## Concurrency - specialitka, ktorou sa zaoberaju specialni programatori; dokopy, parelelen, multitasking programovanie
+- vytvaranie vlakien Threads, ktore sa spustia z hlavneho programu ale bezia mimo hlavneho programu - mozu ist paralene ale nemusia, zavisi od HW a volnych CPU (vieme v java pozadovat paralelne fungovanie ale nevieme to velmi ovlyvnit)
+
+https://github.com/janbodnar/Java-Skolenie/blob/main/concurrency.md
+
+```java
+package com.zetcode;
+
+class Task implements Runnable {
+
+    private int delay;
+    private String name;
+
+    public Task(String name, int delay) {
+
+        this.name = name;
+        this.delay = delay;
+    }
+
+    @Override
+    public void run() {
+
+        try {
+
+            System.out.println("starting task: " + name);
+
+            Thread.sleep(delay);
+            System.out.printf("finishing task %s%n", this.name);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        var task1 = new Task("Task/2000", 2000);
+        var t1 = new Thread(task1);
+        t1.start();
+
+        var task2 = new Task("Task/1000", 1000);
+        var t2 = new Thread(task2);
+        t2.start();
+
+        var task3 = new Task("Task/500", 500);
+        var t3 = new Thread(task3);
+        t3.start();
+
+        System.out.println("tasks launched");
+    }
+}
+```
+
+- v tomto programe sa caka na ukoncneie taskov (Threadov) a az po ich ukonceni pokracuje dalej (join metoda)
+
+```java
+package com.zetcode;
+
+class Worker extends Thread {
+
+    private int delay;
+    private String msg;
+
+    public Worker(int delay, String msg) {
+
+        this.delay = delay;
+        this.msg = msg;
+    }
+
+    public void run() {
+
+        try {
+            Thread.sleep(delay);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println(msg);
+    }
+}
+
+public class JoinEx {
+
+    public static void main(String[] args) {
+
+        var w1 = new Worker(2000, "Hello there");
+        var w2 = new Worker(1000, "New mail received");
+        var w3 = new Worker(500, "Notes taken");
+
+        // start three threads
+        w1.start();
+        w2.start();
+        w3.start();
+
+        // wait for threads to end
+        try {
+
+            // join is a blocker method which waits for a thread to complete.
+
+            // the w1.join() causes the current (main) thread to pause execution
+            // until w1's thread terminates.
+            w1.join();
+            w2.join();
+            w3.join();
+
+        } catch (InterruptedException e) {
+
+            e.printStackTrace();
+        }
+
+        System.out.println("doing main tasks");
+        System.out.println("finished tasks");
+    }
+}
+```
+
+- synchronizacne primitivum AtomicLong sa pouziva na zabezpecenie toho, aby sa najprv ukoncilo jedno vlakno a az potom riesilo dalsie, aby sa vlakna nebili a nedochadzalo k chybam
+
+```java
+package com.zetcode;
+
+import java.util.concurrent.atomic.AtomicLong;
+
+class Counter {
+
+    private final AtomicLong counter = new AtomicLong(0);
+
+    public void inc() {
+
+        counter.getAndIncrement();
+    }
+
+    public long get() {
+
+        return counter.get();
+    }
+}
+
+public class AtomicLongEx {
+
+    public static void main(String[] args) throws InterruptedException {
+
+        final Counter counter = new Counter();
+
+        // 500 threads
+        for (int i = 0; i < 500; i++) {
+
+            var thread = new Thread(() -> counter.inc());
+
+            thread.start();
+        }
+
+        // sleep three seconds
+        Thread.sleep(3000);
+
+        System.out.println("Value: " + counter.get());
+    }
+}
+```
+
+- dlhotrvajuca uloha je posunuta na pozadie a bezi na pozadi, tam sa zaruci, ze hlavne okno dokaze v pohode prekreslovat 
+
+```java
+package com.zetcode;
+
+import javax.swing.GroupLayout;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.SwingWorker;
+import java.awt.EventQueue;
+
+class MyWorker extends SwingWorker<Void, Void> {
+
+    @Override
+    protected Void doInBackground() throws Exception {
+        // Simulate a time-consuming task
+        Thread.sleep(3000);
+        return null;
+    }
+
+    @Override
+    protected void done() {
+        System.out.println("task done");
+    }
+}
+
+public class ButtonTaskEx extends JFrame {
+
+    public ButtonTaskEx() {
+
+        initUI();
+    }
+
+    private void initUI() {
+
+        var taskButton = new JButton("Task");
+
+//        taskButton.addActionListener((event) -> {
+//            var worker = new MyWorker();
+//            worker.execute();
+//        });
+
+
+        taskButton.addActionListener((event) -> {
+            try {
+                Thread.sleep(3000);
+                System.out.println("task done");
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        createLayout(taskButton);
+
+        setTitle("Task button");
+        setSize(500, 450);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+    }
+
+    private void createLayout(JComponent... arg) {
+
+        var pane = getContentPane();
+        var gl = new GroupLayout(pane);
+        pane.setLayout(gl);
+
+        gl.setAutoCreateContainerGaps(true);
+
+        gl.setHorizontalGroup(gl.createSequentialGroup()
+                .addComponent(arg[0])
+        );
+
+        gl.setVerticalGroup(gl.createSequentialGroup()
+                .addComponent(arg[0])
+        );
+    }
+
+    public static void main(String[] args) {
+
+        EventQueue.invokeLater(() -> {
+
+            var ex = new ButtonTaskEx();
+            ex.setVisible(true);
+        });
+    }
+}
+```
+
+uloha prehladavania disku a hladania obrazkov je v dlhotrvajucom vlakne a info o najdeni sa posiela hlavnemu programu a zoznam sa prekresluje na obrazovku
+
+
+```java
+
+import javax.swing.AbstractAction;
+import javax.swing.GroupLayout;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.SwingWorker;
+import java.awt.Container;
+import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.FileVisitResult;
+import java.nio.file.FileVisitor;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.PathMatcher;
+import java.nio.file.Paths;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.List;
+
+import static javax.swing.GroupLayout.Alignment.BASELINE;
+import static javax.swing.GroupLayout.Alignment.CENTER;
+
+/*
+ * This program initiates a background search for
+ * various image files in a user's home directory.
+ */
+
+public class Main extends JFrame {
+
+    private JTextArea area;
+    private JLabel lbl;
+    private JButton btn;
+
+    public Main() {
+
+        initUI();
+    }
+
+    private void initUI() {
+
+        area = new JTextArea(20, 40);
+        area.setEditable(false);
+        var scrollPane = new JScrollPane(area);
+
+        btn = new JButton("Start");
+        btn.addActionListener(new StartSearchAction());
+
+        lbl = new JLabel("Files found: ");
+
+        createLayout(scrollPane, btn, lbl);
+
+        setTitle("Searching for files");
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    private void createLayout(JComponent... arg) {
+
+        Container pane = getContentPane();
+        GroupLayout gl = new GroupLayout(pane);
+        pane.setLayout(gl);
+
+        gl.setAutoCreateContainerGaps(true);
+        gl.setAutoCreateGaps(true);
+
+        gl.setHorizontalGroup(gl.createParallelGroup(CENTER)
+                .addComponent(arg[0])
+                .addGroup(gl.createSequentialGroup()
+                        .addComponent(arg[1])
+                        .addComponent(arg[2]))
+        );
+
+        gl.setVerticalGroup(gl.createSequentialGroup()
+                .addComponent(arg[0])
+                .addGroup(gl.createParallelGroup(BASELINE)
+                        .addComponent(arg[1])
+                        .addComponent(arg[2]))
+        );
+
+        pack();
+    }
+
+    private class StartSearchAction extends AbstractAction {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            doStartSearch();
+        }
+
+        private void doStartSearch() {
+
+            btn.setEnabled(false);
+
+            var tw = new FileTreeWalker();
+            tw.execute();
+        }
+    }
+
+    public static void main(String[] args) {
+
+        EventQueue.invokeLater(() -> {
+            var ex = new Main();
+            ex.setVisible(true);
+        });
+    }
+
+    private class FileTreeWalker extends SwingWorker<Void, Path>
+            implements FileVisitor<Path> {
+
+        private final PathMatcher matcher;
+        private int count = 0;
+
+        public FileTreeWalker() {
+
+            var str = "glob:**.{png,PNG,gif,GIF,jpg,jpeg,JPG,JPEG}";
+            matcher = FileSystems.getDefault().getPathMatcher(str);
+        }
+
+        @Override
+        protected Void doInBackground() throws IOException {
+
+            Path path = Paths.get(System.getProperty("user.home"));
+            Files.walkFileTree(path, this);
+            return null;
+        }
+
+        @Override
+        protected void process(List<Path> chunks) {
+
+            for (Path path : chunks) {
+
+                area.append(path.toString() + "\n");
+                count++;
+
+                lbl.setText(String.format("Files found: %d", count));
+            }
+        }
+
+        @Override
+        protected void done() {
+
+            btn.setEnabled(true);
+        }
+
+        @Override
+        public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs){
+
+            return FileVisitResult.CONTINUE;
+        }
+
+        @Override
+        public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)  {
+
+            if (matcher.matches(file)) {
+
+                publish(file);
+            }
+
+            return FileVisitResult.CONTINUE;
+        }
+
+        @Override
+        public FileVisitResult visitFileFailed(Path file, IOException exc) {
+
+            return FileVisitResult.CONTINUE;
+        }
+
+        @Override
+        public FileVisitResult postVisitDirectory(Path dir, IOException exc) {
+
+            return FileVisitResult.CONTINUE;
+        }
+    }
+}
+```
+
+
+- Paralelne tasky - vynutenie (ale pc sa rozhodne ci pojde to naozaj paralelne)
+- Palindróm je všeobecne akákoľvek postupnosť symbolov, typicky slovo, veta, verš či číslo (ale napríklad i postupnosť nôt, DNA sekvencia a podobne), ktorá má tú vlastnosť, že ju možno čítať v ľubovoľnom smere (sprava doľava alebo zľava doprava).
+
+
+```java
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+
+void main() {
+    // List of words to check
+    List<String> words = Arrays.asList("level", "world", "radar", "java",
+            "civic", "hello", "deified", "noon");
+
+    // Find palindromes using parallel stream
+    List<String> palindromes = findPalindromes(words);
+
+    // Print the results
+    System.out.println("Palindromes: " + palindromes);
+}
+
+List<String> findPalindromes(List<String> words) {
+    return words.parallelStream() // Use parallel stream for concurrent processing
+            .filter(this::isPalindrome) // Filter palindromes
+            .collect(Collectors.toList()); // Collect results into a list
+}
+
+boolean isPalindrome(String word) {
+    String reversed = new StringBuilder(word).reverse().toString(); // Reverse the word
+    return word.equals(reversed); // Check if the original word is equal to its reverse
+}
+```
