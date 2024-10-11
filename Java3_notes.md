@@ -1385,6 +1385,7 @@ void main () {
 
 ## Concurrency - specialitka, ktorou sa zaoberaju specialni programatori; dokopy, parelelen, multitasking programovanie
 - vytvaranie vlakien Threads, ktore sa spustia z hlavneho programu ale bezia mimo hlavneho programu - mozu ist paralene ale nemusia, zavisi od HW a volnych CPU (vieme v java pozadovat paralelne fungovanie ale nevieme to velmi ovlyvnit)
+- 
 
 https://github.com/janbodnar/Java-Skolenie/blob/main/concurrency.md
 
@@ -1853,3 +1854,438 @@ boolean isPalindrome(String word) {
     return word.equals(reversed); // Check if the original word is equal to its reverse
 }
 ```
+
+# Sekvencna kontrola dostupnosti stranok
+
+```java
+package com.zetcode;
+
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.time.Duration;
+import java.util.List;
+import java.util.stream.Stream;
+
+public class Main {
+
+    public static void main(String[] args) {
+        List<URI> uris = Stream.of(
+                "https://www.google.com/",
+                "https://clojure.org",
+                "https://www.rust-lang.org",
+                "https://golang.org",
+                "https://www.python.org",
+                "https://code.visualstudio.com",
+                "https://ifconfig.me",
+                "http://termbin.com",
+                "https://www.github.com/"
+        ).map(URI::create).toList();
+
+        try (HttpClient httpClient = HttpClient.newBuilder()
+                .connectTimeout(Duration.ofSeconds(10))
+                .followRedirects(HttpClient.Redirect.ALWAYS)
+                .build()) {
+
+            for (URI uri : uris) {
+                verifyUri(httpClient, uri);
+            }
+        }
+    }
+
+    private static void verifyUri(HttpClient httpClient, URI uri) {
+        HttpRequest request = HttpRequest.newBuilder()
+                .timeout(Duration.ofSeconds(5))
+                .uri(uri)
+                .build();
+
+        try {
+            HttpResponse<Void> response = httpClient.send(request, HttpResponse.BodyHandlers.discarding());
+            if (response.statusCode() == 200) {
+                System.out.printf("[SUCCESS] Verified %s%n", uri);
+            } else {
+                System.out.printf("[FAILURE] Failed to verify %s%n", uri);
+            }
+        } catch (Exception e) {
+            System.out.printf("[FAILURE] Exception while verifying %s: %s%n", uri, e.getMessage());
+        }
+    }
+}
+```
+
+# to iste ako hore ale asynchronne (requesty sa poslu naraz a potom sa caka na odpoved) rychlejsie 
+
+
+```java
+package com.zetcode;
+
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.time.Duration;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Stream;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        List<URI> uris = Stream.of(
+                "https://www.google.com/",
+                "https://clojure.org",
+                "https://www.rust-lang.org",
+                "https://golang.org",
+                "https://www.python.org",
+                "https://code.visualstudio.com",
+                "https://ifconfig.me",
+                "http://termbin.com",
+                "https://www.github.com/"
+        ).map(URI::create).toList();
+
+        try (HttpClient httpClient = HttpClient.newBuilder()
+                .connectTimeout(Duration.ofSeconds(10))
+                .followRedirects(HttpClient.Redirect.ALWAYS)
+                .build()) {
+
+            var futures = uris.stream()
+                    .map(uri -> verifyUri(httpClient, uri))
+                    .toArray(CompletableFuture[]::new);
+
+            CompletableFuture.allOf(futures).join();
+        }
+    }
+
+    private static CompletableFuture<Void> verifyUri(HttpClient httpClient,
+                                                     URI uri) {
+        HttpRequest request = HttpRequest.newBuilder()
+                .timeout(Duration.ofSeconds(5))
+                .uri(uri)
+                .build();
+
+        return httpClient.sendAsync(request, HttpResponse.BodyHandlers.discarding())
+                .thenApply(HttpResponse::statusCode)
+                .thenApply(statusCode -> statusCode == 200)
+                .exceptionally(ex -> false)
+                .thenAccept(valid -> {
+                    if (valid) {
+                        System.out.printf("[SUCCESS] Verified %s%n", uri);
+                    } else {
+                        System.out.printf("[FAILURE] Failed to verify%s%n", uri);
+                    }
+                });
+    }
+}
+```
+
+## JSoup  - struktura v html , vizual v  CSS
+https://github.com/janbodnar/Java-Skolenie/blob/main/libs/jsoup.md
+maven project
+dependencies:
+https://mvnrepository.com/artifact/org.jsoup/jsoup/1.18.1
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document title</title>
+    <style>
+        li {color:blue}
+        p { font-family: Hevletica}
+    </style>
+</head>
+<body>
+<p>List of words</p>
+<ul>
+    <li>dark</li>
+    <li>smart</li>
+    <li>war</li>
+    <li>cloud</li>
+    <li>park</li>
+    <li>cup</li>
+    <li>worm</li>
+    <li>water</li>
+    <li>rock</li>
+    <li>warm</li>
+</ul>
+<footer>footer for words</footer>
+</body>
+</html>
+```
+
+```java
+package com.zetcode;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
+public class JSoupFromStringEx {
+
+    public static void main(String[] args) {
+
+        String htmlString = """
+                <html><head><title>My title</title></head>
+                <body>Body content</body></html>""";
+
+        Document doc = Jsoup.parse(htmlString);
+        String title = doc.title();
+        String body = doc.body().text();
+
+        System.out.printf("Title: %s%n", title);
+        System.out.printf("Body: %s", body);
+    }
+}
+
+- stiahnutie stranky a dalsich veci zo stranky
+
+```
+package com.zetcode;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
+public class Main {
+
+    public static void main(String[] args) throws IOException {
+
+        String url = "https://zoznam.sk";
+
+        Document doc = Jsoup.connect(url).get();
+        String title = doc.title();
+        System.out.println(title);
+        System.out.println(doc.body().text());
+
+        String html = doc.html();
+        Path path = Path.of("src/zoznam.html");
+        Files.writeString(path,html);
+    }
+}
+```
+
+- ziskalnie najakych informacii zo stranok
+
+```java
+package com.zetcode;
+
+import java.io.IOException;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
+public class Main {
+
+    public static void main(String[] args) throws IOException {
+
+        String url = "https://zoznam.sk";
+        Document document = Jsoup.connect(url).get();
+
+        String description = document.select("meta[name=description]")
+                .first().attr("content");
+        System.out.println("Description : " + description);
+
+        String keywords = document.select("meta[name=keywords]")
+                .first().attr("content");
+        System.out.println("Keywords : " + keywords);
+    }
+}
+```
+
+- najdenie vsetkych tagov v dokumente
+
+```java
+package com.zetcode;
+
+import org.jsoup.Jsoup;
+
+import java.io.File;
+import java.io.IOException;
+
+public class JSoupAll {
+
+    public static void main(String[] args) throws IOException {
+
+        var fileName = "src/main/resources/words.html";
+        var myFile = new File(fileName);
+
+        var doc = Jsoup.parse(myFile, "UTF-8");
+        var all = doc.body().select("*");
+
+        all.forEach(e -> System.out.println(e.tagName()));
+    }
+}
+```
+
+zmena hodnot tagov
+
+```java
+package com.zetcode;
+
+import org.jsoup.Jsoup;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        String htmlString = """
+                <html><head><title>My title</title></head>
+                <body></body></html>""";
+
+        var doc = Jsoup.parse(htmlString);
+
+        var e = doc.select("body").first();
+        e.append("<p>hello there!</p>");
+        e.prepend("<h1>Heading</h1>");
+
+        System.out.println(doc);
+    }
+}
+```
+
+vyhladanie liniek (externych/internych) na stranke
+
+
+```java
+package com.zetcode;
+
+import java.io.IOException;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+public class Main {
+
+    public static void main(String[] args) throws IOException {
+
+        String url = "https://jsoup.org";
+
+        Document document = Jsoup.connect(url).get();
+        Elements links = document.select("a[href]");
+
+        for (Element link : links) {
+
+            System.out.println("link : " + link.attr("href"));
+            System.out.println("text : " + link.text());
+        }
+    }
+}
+```
+
+
+https://github.com/janbodnar/Java-Skolenie/blob/main/compile_run.md
+Visual studio:
+
+
+![image](https://github.com/user-attachments/assets/b519e0d9-8c5d-41b3-a47e-fc957694f5e8)
+
+![image](https://github.com/user-attachments/assets/1c76989c-4f78-4a72-aff2-af040535fec4)
+
+do prilkazoveho riadku (View - Terminal) vo visual studiu: 
+![image](https://github.com/user-attachments/assets/80b8f8fb-67ee-470b-a55e-6b933533b7ad)
+java --enable-preview --source 22  .\Main.java
+
+1. Kompilacia do bytecode
+javac -d bin .\com\example\Main.java
+
+2. spustenie java class z bin adresara
+C:\Users\student\Documents\javaprogram\bin> java com.example.Main
+
+![image](https://github.com/user-attachments/assets/9ab87641-d28b-4f48-8e5e-fbfa8d396035)
+
+
+## Datetime
+
+
+https://github.com/janbodnar/Java-Skolenie/blob/main/common/datetime.md
+
+```java
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
+
+void main() {
+
+    var timestamp = Instant.now();
+    System.out.println("The current timestamp: " + timestamp);
+
+    System.out.printf("Unix time: %d%n", timestamp.toEpochMilli());
+
+    //Now minus five days
+    var minusFive = timestamp.minus(5, ChronoUnit.DAYS);
+    System.out.println("Now minus five days:" + minusFive);
+
+    var atZone = timestamp.atZone(ZoneId.of("GMT"));
+    System.out.printf("GMT: %s%n", atZone);
+
+    var yesterday = Instant.now().minus(24, ChronoUnit.HOURS);
+    System.out.println("Yesterday: " + yesterday);
+}
+```
+
+```java
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.util.Locale;
+
+void main() {
+
+//    Locale.setDefault(Locale.ENGLISH);
+    Locale.setDefault(Locale.of("sk", "SK"));
+
+    var now = LocalDate.now();
+
+    var dtf1 = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT);
+    var dtf2 = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM);
+    var dtf3 = DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG);
+    var dtf4 = DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL);
+
+    System.out.println(dtf1.format(now));
+    System.out.println(dtf2.format(now));
+    System.out.println(dtf3.format(now));
+    System.out.println(dtf4.format(now));
+}
+```
+
+# operacia String datum/cas na format datum/cas
+
+
+```java
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
+import java.util.Locale;
+
+void main() {
+
+    Locale.setDefault(Locale.ENGLISH);
+
+    String d = "2023-10-26";
+
+    DateTimeFormatter dtf = DateTimeFormatter.ISO_DATE;
+    TemporalAccessor ta = dtf.parse(d);
+    LocalDate ld = LocalDate.from(ta);
+    System.out.println(ld);
+
+    String sd1 = "2018-01-04";
+    LocalDate ld1 = LocalDate.parse(sd1);
+    System.out.println("Date: " + ld1);
+
+    String sdatetime = "2017-08-16T16:34:10";
+    LocalDateTime ldt = LocalDateTime.parse(sdatetime);
+    System.out.println("Datetime: " + ldt);
+
+    DateTimeFormatter dtfmt = DateTimeFormatter.ofPattern("dd MMM yyyy");
+    String anotherDate = "14 Aug 2017";
+    LocalDate lds = LocalDate.parse(anotherDate, dtfmt);
+    System.out.println(anotherDate + " parses to " + lds);
+}
+```
+
