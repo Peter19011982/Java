@@ -2311,7 +2311,7 @@ void main() {
     String password = "s$cret";
 
     Jdbi jdbi = Jdbi.create(jdbcUrl, user, password);
-
+    //jdbi.withHandle je specialna kniznica na komunikaciu s db postgres - riesi pripojenie aj uzatvaranie zdrojov
     String res = jdbi.withHandle(handle -> handle.createQuery("SELECT VERSION()")
             .mapTo(String.class)
             .one());
@@ -2321,7 +2321,7 @@ void main() {
 ```
 
 
-- Batches
+- Batches - moznost davkovo nakrmit DB 
 
 
 ```java
@@ -2377,7 +2377,7 @@ void main() {
 ```
 
 
-- Mappin g row to object class/record
+- Mapping row to object class/record
 
 
 ```java
@@ -2435,7 +2435,7 @@ void main() {
         System.out.println("No users found.");
     } else {
 
-        System.out.println("found " + users.size() + " users");
+        'System.out.println("found " + users.size() + " users");
     }
 
     for (User user: users) {
