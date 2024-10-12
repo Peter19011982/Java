@@ -166,10 +166,10 @@ void main() throws IOException {
     // suitable for small files
     String content = Files.readString(myPath, StandardCharsets.UTF_8);
     System.out.println(content);
-//+_ znamena, ze to moze urobit na viacerych miestach
+//+  znamena, ze to moze byt viacero za sebou iducich znakov z []
     Pattern pattern = Pattern.compile("[\\s,.]+");
     
-    //rozseka text na List slov nazaklade znakov hore "[\\s,.]+" biele mieeto, ciarka a bodka viackrat
+    //rozseka text na List slov na zaklade znakov hore "[\\s,.]+" biele mieeto, ciarka a bodka viackrat
     List<String> words =pattern.splitAsStream(content).toList();
     System.out.println(words);
 
@@ -272,6 +272,9 @@ void main(String[] args) throws IOException {
 }
 ```
 
+## zapisanie do suboru bufferedwriter
+
+
 ```java
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -338,7 +341,9 @@ void main() throws IOException {
     System.out.println(min);
 }
 ```
-alebo aj takto viem cez List
+
+- alebo aj takto viem cez List
+
 
 ```java
 import java.io.BufferedReader;
@@ -447,7 +452,7 @@ void main() {
     for (int val: uvals) {
         System.out.println(val);
     }
-    //sortovanie default od najmens po najvacsi
+    //sortovanie default od najmensieho po najvacsi
     IntStream nums = IntStream.of(1,2,3,4,4,5,6,6,7);
     nums.boxed().sorted().forEach(System.out::println);
 }
@@ -484,7 +489,7 @@ void main() {
 //            .forEach(System.out::println);
 
     List<Car> cheapCars = cars.stream().filter( car -> car.price<30000).toList();
-    System.out.println(cheapCars);
+    System.out.println(cheapCars);]
 }
 ```
 
@@ -503,7 +508,7 @@ void main() {
 
     List<String> words = List.of("Seven", "even",
             "Maven", "Amen", "eleven");
-
+// .+ znamena, ze pred even moze byt viac lubovolnych znakov
     Pattern p = Pattern.compile(".+even");
 
     for (String word: words) {
@@ -537,7 +542,7 @@ void main() {
         System.out.printf("%s at %d", matcher.group(), matcher.start());
     }
 }
-
+```
  
 ```java
 import java.util.regex.Matcher;
